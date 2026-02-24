@@ -2,10 +2,6 @@ RewriteEngine On
 RewriteCond %{HTTPS} off
 RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
 
-<Files "deploy.php">
-    Require all granted
-</Files>
-
 # php -- BEGIN cPanel-generated handler, do not edit
 # Set the “ea-php83” package as the default “PHP” programming language.
 <IfModule mime_module>
