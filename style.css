@@ -1,0 +1,144 @@
+/* Glitch Text Effect */
+.glitch-text {
+    position: relative;
+    color: white;
+    letter-spacing: -0.02em;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0a0a0a;
+}
+
+.glitch-text::before {
+    left: 2px;
+    text-shadow: -2px 0 #ff00ff;
+    clip: rect(24px, 550px, 90px, 0);
+    animation: glitch-anim-2 3s infinite linear alternate-reverse;
+}
+
+.glitch-text::after {
+    left: -2px;
+    text-shadow: -2px 0 #00f3ff;
+    clip: rect(85px, 550px, 140px, 0);
+    animation: glitch-anim 2.5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+    0% {
+        clip: rect(14px, 9999px, 76px, 0);
+    }
+    20% {
+        clip: rect(89px, 9999px, 12px, 0);
+    }
+    40% {
+        clip: rect(23px, 9999px, 96px, 0);
+    }
+    60% {
+        clip: rect(67px, 9999px, 34px, 0);
+    }
+    80% {
+        clip: rect(12px, 9999px, 87px, 0);
+    }
+    100% {
+        clip: rect(45px, 9999px, 23px, 0);
+    }
+}
+
+@keyframes glitch-anim-2 {
+    0% {
+        clip: rect(65px, 9999px, 100px, 0);
+    }
+    20% {
+        clip: rect(12px, 9999px, 4px, 0);
+    }
+    40% {
+        clip: rect(87px, 9999px, 56px, 0);
+    }
+    60% {
+        clip: rect(23px, 9999px, 89px, 0);
+    }
+    80% {
+        clip: rect(45px, 9999px, 12px, 0);
+    }
+    100% {
+        clip: rect(34px, 9999px, 67px, 0);
+    }
+}
+
+/* Smooth Scroll Behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #00f3ff;
+}
+
+/* Selection Color */
+::selection {
+    background: #00f3ff;
+    color: #0a0a0a;
+}
+
+/* Glitch Hover Effect for Images */
+.glitch-hover:hover {
+    animation: glitch-image 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+}
+
+@keyframes glitch-image {
+    0% {
+        transform: translate(0);
+    }
+    20% {
+        transform: translate(-2px, 2px);
+    }
+    40% {
+        transform: translate(-2px, -2px);
+    }
+    60% {
+        transform: translate(2px, 2px);
+    }
+    80% {
+        transform: translate(2px, -2px);
+    }
+    100% {
+        transform: translate(0);
+    }
+}
+
+/* Audio Visualizer Animation (for future use) */
+@keyframes equalizer {
+    0% { height: 10%; }
+    50% { height: 100%; }
+    100% { height: 10%; }
+}
+
+.equalizer-bar {
+    animation: equalizer 1s ease-in-out infinite;
+}
+
+.equalizer-bar:nth-child(2) { animation-delay: 0.1s; }
+.equalizer-bar:nth-child(3) { animation-delay: 0.2s; }
+.equalizer-bar:nth-child(4) { animation-delay: 0.3s; }
+.equalizer-bar:nth-child(5) { animation-delay: 0.4s; }
