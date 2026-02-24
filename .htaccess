@@ -3,7 +3,7 @@ RewriteCond %{HTTPS} off
 RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
 
 <Files "deploy.php">
-    Require ip 140.82.112.0/20
+    Require all granted
 </Files>
 
 # php -- BEGIN cPanel-generated handler, do not edit
