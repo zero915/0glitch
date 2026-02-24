@@ -2,7 +2,7 @@
 // deploy.php
 
 // Optional: restrict access by a secret key
-$secret = 'SYSTEM_UPGRADE_REBOOT'; // change this to a random string
+$secret = 'SYSTEM_UPGRADE_REBOOT'; 
 $headers = getallheaders();
 if (!isset($headers['X-Hub-Signature']) || empty($headers['X-Hub-Signature'])) {
     http_response_code(403);
