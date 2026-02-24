@@ -54,7 +54,7 @@ return [
         'title'   => 'Sinta',
         'album'   => 'System Upgrade',
         'year'    => '2025',
-        'genres'  => ['Rock', 'Pop'],
+        'genres'  => ['Indie', 'Pop'],
     ],
     [
         'image'   => 'images/imove.jpg',
