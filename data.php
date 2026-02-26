@@ -34,24 +34,6 @@ $albums = [
         'year'         => '2025',
         'description'  => 'Full-length upgrade. New sounds, same malfunction.',
         'genres'       => ['Pop', 'Indie', 'Rock', 'Rap'],
-        // Per-track: name + optional 'spotify' and 'youtube' URLs. Omit or leave '' to use album link.
-        'tracks'       => [
-            // ['name' => 'System Upgrade', 'spotify' => '', 'youtube' => ''],
-            // ['name' => 'Ikaw Lang', 'spotify' => '', 'youtube' => ''],
-            // ['name' => 'Fun Run', 'spotify' => 'https://open.spotify.com/track/7A8QY2pTIlNHwQhn0JpEyk?si=0f0ef0c2ef754d38', 'youtube' => ''],
-            ['name' => 'U + Me', 'spotify' => 'https://open.spotify.com/track/2IGcIbNpaUGi4IjRSHPr7N', 'youtube' => 'https://music.youtube.com/watch?v=fyh4nzAW9-4'],
-            ['name' => 'Flex Para Sa’yo', 'spotify' => 'https://open.spotify.com/track/0PwZzIMmw46S30rLAqj0SH?si=efc4a97621004b31', 'youtube' => 'https://music.youtube.com/watch?v=3UfGHqrdgc0'],
-            ['name' => 'Sweet Crazy', 'spotify' => '', 'youtube' => 'https://music.youtube.com/watch?v=FvxK_jo_5IQ'],
-            ['name' => 'Lucky Charm', 'spotify' => '', 'youtube' => 'https://music.youtube.com/watch?v=hK0AQD-YseQ']
-            // ['name' => 'King Dumbo', 'spotify' => '', 'youtube' => ''],
-            // ['name' => 'Silver', 'spotify' => '', 'youtube' => ''],
-            // ['name' => 'You Don’t Know', 'spotify' => '', 'youtube' => ''],
-            ['name' => 'iMove', 'spotify' => 'https://open.spotify.com/track/4ssMzGURBr7JcVEsFrkHj8', 'youtube' => 'https://music.youtube.com/watch?v=7uIyTu4VF2I'],
-            ['name' => 'Golden Fire', 'spotify' => '', 'youtube' => ''],
-            ['name' => 'Shadow Play', 'spotify' => '', 'youtube' => ''],
-            ['name' => 'Sinta', 'spotify' => 'https://open.spotify.com/track/7pHcQDiZuBur66S41e2cq2', 'youtube' => 'https://music.youtube.com/watch?v=JL19hpZ400E'],
-            ['name' => 'Sayaw Sa Hangin', 'spotify' => 'https://open.spotify.com/track/088yyXF6p9vvXtm7OuV27o', 'youtube' => 'https://music.youtube.com/watch?v=QUBgh4C_eaw'],
-        ],
     ],
     [
         'image'        => 'images/merry-christmas-sayo.jpg',
@@ -66,18 +48,6 @@ $albums = [
         'year'         => '2025',
         'description'  => 'Holiday vibes and winter feels. A short run of seasonal tracks.',
         'genres'       => ['Pop', 'Holiday', 'R&B', 'Rock'],
-        // Add real track names and optional 'spotify' / 'youtube' per track so modal shows correct title and links
-        // 'tracks'       => [
-        //     ['name' => 'Astig Na Pasko', 'spotify' => '', 'youtube' => ''],
-        //     ['name' => 'Christmas Card', 'spotify' => '', 'youtube' => ''],
-        //     ['name' => 'The Gift I Didn’t Know', 'spotify' => '', 'youtube' => ''],
-        //     ['name' => 'We Still Believe', 'spotify' => '', 'youtube' => ''],
-        //     ['name' => 'Cookies for Santa', 'spotify' => '', 'youtube' => ''],
-        //     ['name' => 'Overtime (Sa Christmas Eve)', 'spotify' => '', 'youtube' => ''],
-        //     ['name' => 'Me Mom and Santa', 'spotify' => '', 'youtube' => ''],
-        //     ['name' => 'Come On In', 'spotify' => '', 'youtube' => ''],
-        //     ['name' => 'Pasko Ng Rock', 'spotify' => '', 'youtube' => ''],
-        // ],
     ],
 ];
 
