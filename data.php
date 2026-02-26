@@ -35,7 +35,7 @@ $albums = [
             ['name' => 'Itim',      'spotify' => 'https://open.spotify.com/track/4P74ZcNHdSG907B65k2FFj', 'youtube' => ''],
             ['name' => 'Tunog',     'spotify' => 'https://open.spotify.com/track/3UxGkPLue2SUHoFJx3DFvI', 'youtube' => ''],
             ['name' => 'Liit',      'spotify' => 'https://open.spotify.com/track/6VMRjEF6Kk8LdF94N1hq91', 'youtube' => ''],
-            ['name' => 'Ahas',      'spotify' => 'https://open.spotify.com/track/0fN5bHsqyKYZKYs8N92KvC', 'youtube' => ''],
+            ['name' => 'Ahas',      'spotify' => 'https://open.spotify.com/track/65dfeqaDzT6P3rFkPwJC2F', 'youtube' => ''],
         ],
     ],
     [
