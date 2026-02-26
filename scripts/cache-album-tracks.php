@@ -4,9 +4,11 @@
  * Fetch track names + per-track Spotify URLs from Spotify for each album and write cache files.
  * data.php uses cache when present; otherwise use manual 'tracks' in each album in data.php.
  *
- * Requires: SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET (env or .env), and a Spotify Premium
- * subscription (Spotify blocks Web API access without Premium). If you don't have Premium,
- * add track names (and optional per-track 'spotify' URLs) in the 'tracks' array in data.php instead.
+ * Requires: SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET (env or .env). Spotify may return HTTP 403
+ * ("user may not be registered") for apps in Development Mode or without Extended Access—see
+ * developer.spotify.com dashboard and recent platform security updates. Fallback: add track
+ * names (and optional per-track 'spotify' URLs) in the 'tracks' array in data.php; the site
+ * reads from cache when present and uses manual tracks otherwise.
  *
  * Usage: php scripts/cache-album-tracks.php
  */

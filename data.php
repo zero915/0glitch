@@ -20,6 +20,23 @@ $albums = [
         'year'         => '2026',
         'description'  => 'A modern take on Filipino mythical creatures (monsters) told through music. Some are terrifying, some are romanticized, and some simply live in folklore.',
         'genres'       => ['Pop', 'Bossanova', 'Blues', 'Rock'],
+        'tracks'       => [
+            ['name' => 'Kalahati',  'spotify' => 'https://open.spotify.com/track/5dKMSXGfV8esruYTqV9kB6', 'youtube' => ''],
+            ['name' => 'Usok',      'spotify' => 'https://open.spotify.com/track/6JubvtsyNtUE7NgkabbQ9M', 'youtube' => ''],
+            ['name' => 'Tanod',     'spotify' => 'https://open.spotify.com/track/1CrVKl8mjK7r5d3riAIXMy', 'youtube' => ''],
+            ['name' => 'Landas',    'spotify' => 'https://open.spotify.com/track/6eh8vQaM0W5umQHjp4UZLv', 'youtube' => ''],
+            ['name' => 'Lupa',      'spotify' => 'https://open.spotify.com/track/4DJeFmHs4iL2wV13gxlsoS', 'youtube' => ''],
+            ['name' => 'Sumpa',     'spotify' => 'https://open.spotify.com/track/1ymio20n3S6aebVNt4heb6', 'youtube' => ''],
+            ['name' => 'Puti',      'spotify' => 'https://open.spotify.com/track/7C5vYnP8IRCvljZHDNcW1S', 'youtube' => ''],
+            ['name' => 'Hikbi',     'spotify' => 'https://open.spotify.com/track/3FzU41JoSrHhXx6fVK0hjx', 'youtube' => ''],
+            ['name' => 'Bantay',    'spotify' => 'https://open.spotify.com/track/0LInuzUvAR3kBWe9lP0MNn', 'youtube' => ''],
+            ['name' => 'Haplos',    'spotify' => 'https://open.spotify.com/track/727yNwaHS7a4J8DbQKwvSz', 'youtube' => ''],
+            ['name' => 'Lingon',    'spotify' => 'https://open.spotify.com/track/26mvK2ix2XHPHQh5Dx7DVQ', 'youtube' => ''],
+            ['name' => 'Itim',      'spotify' => 'https://open.spotify.com/track/4P74ZcNHdSG907B65k2FFj', 'youtube' => ''],
+            ['name' => 'Tunog',     'spotify' => 'https://open.spotify.com/track/3UxGkPLue2SUHoFJx3DFvI', 'youtube' => ''],
+            ['name' => 'Liit',      'spotify' => 'https://open.spotify.com/track/6VMRjEF6Kk8LdF94N1hq91', 'youtube' => ''],
+            ['name' => 'Ahas',      'spotify' => 'https://open.spotify.com/track/0fN5bHsqyKYZKYs8N92KvC', 'youtube' => ''],
+        ],
     ],
     [
         'image'        => 'images/system-upgrade.jpg',
@@ -34,6 +51,23 @@ $albums = [
         'year'         => '2025',
         'description'  => 'Full-length upgrade. New sounds, same malfunction.',
         'genres'       => ['Pop', 'Indie', 'Rock', 'Rap'],
+        'tracks'       => [
+            ['name' => 'System Upgrade', 'spotify' => 'https://open.spotify.com/track/4OmgpP88rPpGNGVKiCR61g', 'youtube' => ''],
+            ['name' => 'Ikaw Lang',      'spotify' => 'https://open.spotify.com/track/2HpscrCRIhaQ7hKYn2yDUM', 'youtube' => ''],
+            ['name' => 'Fun Run',        'spotify' => 'https://open.spotify.com/track/7A8QY2pTIlNHwQhn0JpEyk', 'youtube' => ''],
+            ['name' => 'U + Me',         'spotify' => 'https://open.spotify.com/track/2IGcIbNpaUGi4IjRSHPr7N', 'youtube' => 'https://music.youtube.com/watch?v=fyh4nzAW9-4'],
+            ['name' => 'Flex Para Sa’yo','spotify' => 'https://open.spotify.com/track/0PwZzIMmw46S30rLAqj0SH', 'youtube' => 'https://music.youtube.com/watch?v=3UfGHqrdgc0'],
+            ['name' => 'Sweet Crazy',    'spotify' => 'https://open.spotify.com/track/6lWy9xOdbIJApLriY9CGJS', 'youtube' => 'https://music.youtube.com/watch?v=FvxK_jo_5IQ'],
+            ['name' => 'Lucky Charm',    'spotify' => 'https://open.spotify.com/track/6eb9s5NLc6I9NqkFQ6qbRp', 'youtube' => 'https://music.youtube.com/watch?v=hK0AQD-YseQ'],
+            ['name' => 'King Dumbo',     'spotify' => 'https://open.spotify.com/track/4Rq1K26YDOgPAysHi5eW3t', 'youtube' => ''],
+            ['name' => 'Silver',         'spotify' => 'https://open.spotify.com/track/7LiuG0R4tlPDMPrhlJ1Aak', 'youtube' => ''],
+            ['name' => 'You Don’t Know', 'spotify' => 'https://open.spotify.com/track/0nC2CYz29QcF9htK0Rqnmz', 'youtube' => ''],
+            ['name' => 'iMove',          'spotify' => 'https://open.spotify.com/track/4ssMzGURBr7JcVEsFrkHj8', 'youtube' => 'https://music.youtube.com/watch?v=7uIyTu4VF2I'],
+            ['name' => 'Golden Fire',    'spotify' => 'https://open.spotify.com/track/10vNExVk9JmCDJrIqYWJiR', 'youtube' => ''],
+            ['name' => 'Shadow Play',    'spotify' => 'https://open.spotify.com/track/3rYRGt5yPodYD5fUj3Dcan', 'youtube' => ''],
+            ['name' => 'Sinta',          'spotify' => 'https://open.spotify.com/track/7pHcQDiZuBur66S41e2cq2', 'youtube' => ''],
+            ['name' => 'Sayaw Sa Hangin','spotify' => 'https://open.spotify.com/track/088yyXF6p9vvXtm7OuV27o', 'youtube' => 'https://music.youtube.com/watch?v=QUBgh4C_eaw'],
+        ],
     ],
     [
         'image'        => 'images/merry-christmas-sayo.jpg',
@@ -48,6 +82,17 @@ $albums = [
         'year'         => '2025',
         'description'  => 'Holiday vibes and winter feels. A short run of seasonal tracks.',
         'genres'       => ['Pop', 'Holiday', 'R&B', 'Rock'],
+        'tracks'       => [
+            ['name' => 'Astig Na Pasko',              'spotify' => 'https://open.spotify.com/track/737xAq49O9XRtwZt5mSKXc', 'youtube' => ''],
+            ['name' => 'Christmas Card',              'spotify' => 'https://open.spotify.com/track/2dO9eLq0FDL2OkbbGBVLKc', 'youtube' => ''],
+            ['name' => 'The Gift I Didn’t Know',      'spotify' => 'https://open.spotify.com/track/1eHfDEKOeGPmFprzyAiayb', 'youtube' => ''],
+            ['name' => 'We Still Believe',            'spotify' => 'https://open.spotify.com/track/3ZquNTYPdpEOBe0lWDNOUq', 'youtube' => ''],
+            ['name' => 'Cookies for Santa',           'spotify' => 'https://open.spotify.com/track/2jc2m1tVoaDNVohM9mmmLP', 'youtube' => ''],
+            ['name' => 'Overtime (Sa Christmas Eve)', 'spotify' => 'https://open.spotify.com/track/5T9sOigyBO0bfMrnj4fWPJ', 'youtube' => ''],
+            ['name' => 'Me Mom and Santa',            'spotify' => 'https://open.spotify.com/track/31Sn79QThg0KHrklnJnOZT', 'youtube' => ''],
+            ['name' => 'Come On In',                  'spotify' => 'https://open.spotify.com/track/36beIT2JVVGqN1XJqAra7G', 'youtube' => ''],
+            ['name' => 'Pasko Ng Rock',               'spotify' => 'https://open.spotify.com/track/3jK1DHExF6dAJYWk8nUQaQ', 'youtube' => ''],
+        ],
     ],
 ];
 
@@ -70,7 +115,7 @@ function get_album_tracks_from_cache($cacheDir, $spotifyAlbumUrl) {
     return is_array($data) ? $data : null;
 }
 
-// Build releases from albums: one entry per track. Manual 'tracks' in album override cache so your data.php wins.
+// Build releases from albums: one entry per track. Use Spotify cache when it has data; when cache is empty or missing, use manual 'tracks' from data.php.
 $releases = [];
 foreach ($albums as $a) {
     $year = $a['year'] ?? '2025';
@@ -83,12 +128,12 @@ foreach ($albums as $a) {
     $manualTracks = $a['tracks'] ?? null;
     $cachedTracks = get_album_tracks_from_cache($cacheDir, $a['links']['spotify'] ?? null);
     for ($n = 1; $n <= $a['track_count']; $n++) {
-        // Prefer manual tracks over cache so titles and per-track links in data.php are always used when set
+        // Prefer cache when it has a track for this index; otherwise use manual tracks (so data.php is used when Spotify cache is empty)
         $track = null;
-        if (!empty($manualTracks) && isset($manualTracks[$n - 1])) {
-            $track = $manualTracks[$n - 1];
-        } elseif (!empty($cachedTracks) && isset($cachedTracks[$n - 1])) {
+        if (!empty($cachedTracks) && isset($cachedTracks[$n - 1])) {
             $track = $cachedTracks[$n - 1];
+        } elseif (!empty($manualTracks) && isset($manualTracks[$n - 1])) {
+            $track = $manualTracks[$n - 1];
         }
         $trackName = 'Track ' . $n;
         // Start from album links, then override with per-track links so modal uses track URLs
