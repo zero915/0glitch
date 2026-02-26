@@ -28,7 +28,15 @@ $clientId     = getenv('SPOTIFY_CLIENT_ID') ?: ($_ENV['SPOTIFY_CLIENT_ID'] ?? ''
 $clientSecret = getenv('SPOTIFY_CLIENT_SECRET') ?: ($_ENV['SPOTIFY_CLIENT_SECRET'] ?? '');
 
 if (!$clientId || !$clientSecret) {
-    fwrite(STDERR, "Set SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET (env or .env).\n");
+    $envPath = $root . '/.env';
+    fwrite(STDERR, "Spotify credentials missing.\n\n");
+    fwrite(STDERR, "1. Go to https://developer.spotify.com/dashboard and create an app (or use an existing one).\n");
+    fwrite(STDERR, "2. Copy .env.example to .env in the project root:\n");
+    fwrite(STDERR, "   cp .env.example .env\n");
+    fwrite(STDERR, "3. Edit .env and set your Client ID and Client Secret:\n");
+    fwrite(STDERR, "   SPOTIFY_CLIENT_ID=your_client_id_here\n");
+    fwrite(STDERR, "   SPOTIFY_CLIENT_SECRET=your_client_secret_here\n\n");
+    fwrite(STDERR, "   (Find them in your app's Settings in the Spotify dashboard.)\n");
     exit(1);
 }
 
@@ -54,23 +62,23 @@ if (empty($albumIds)) {
     exit(0);
 }
 
-// Token
-$ch = curl_init('https://accounts.spotify.com/api/token');
-curl_setopt_array($ch, [
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_POST           => true,
-    CURLOPT_POSTFIELDS     => 'grant_type=client_credentials',
-    CURLOPT_HTTPHEADER     => [
-        'Authorization: Basic ' . base64_encode($clientId . ':' . $clientSecret),
-        'Content-Type: application/x-www-form-urlencoded',
+// Token (using file_get_contents so cURL is not required)
+$tokenOpts = [
+    'http' => [
+        'method'  => 'POST',
+        'header'   => "Authorization: Basic " . base64_encode($clientId . ':' . $clientSecret) . "\r\nContent-Type: application/x-www-form-urlencoded\r\n",
+        'content'  => 'grant_type=client_credentials',
+        'ignore_errors' => true,
     ],
-]);
-$tokenResponse = curl_exec($ch);
-$tokenHttp     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-curl_close($ch);
+];
+$tokenResponse = @file_get_contents('https://accounts.spotify.com/api/token', false, stream_context_create($tokenOpts));
+$tokenHttp = 0;
+if (isset($http_response_header) && preg_match('/^HTTP\/\S+\s+(\d+)/', $http_response_header[0], $m)) {
+    $tokenHttp = (int) $m[1];
+}
 
-if ($tokenHttp !== 200) {
-    fwrite(STDERR, "Spotify token error (HTTP $tokenHttp).\n");
+if ($tokenHttp !== 200 || $tokenResponse === false) {
+    fwrite(STDERR, "Spotify token error (HTTP $tokenHttp). " . ($tokenResponse ?: "No response.") . "\n");
     exit(1);
 }
 
@@ -88,16 +96,20 @@ foreach ($albumIds as $albumId => $albumTitle) {
 
     do {
         $url = 'https://api.spotify.com/v1/albums/' . urlencode($albumId) . '/tracks?limit=' . $limit . '&offset=' . $offset;
-        $ch  = curl_init($url);
-        curl_setopt_array($ch, [
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HTTPHEADER     => ['Authorization: Bearer ' . $accessToken],
-        ]);
-        $body = curl_exec($ch);
-        $http = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
+        $opts = [
+            'http' => [
+                'method'  => 'GET',
+                'header'   => "Authorization: Bearer " . $accessToken . "\r\n",
+                'ignore_errors' => true,
+            ],
+        ];
+        $body = @file_get_contents($url, false, stream_context_create($opts));
+        $http = 0;
+        if (isset($http_response_header) && preg_match('/^HTTP\/\S+\s+(\d+)/', $http_response_header[0], $m)) {
+            $http = (int) $m[1];
+        }
 
-        if ($http !== 200) {
+        if ($http !== 200 || $body === false) {
             fwrite(STDERR, "Album $albumId ($albumTitle): API HTTP $http\n");
             break;
         }
@@ -105,14 +117,17 @@ foreach ($albumIds as $albumId => $albumTitle) {
         $data  = json_decode($body, true);
         $items = $data['items'] ?? [];
         foreach ($items as $t) {
-            $tracks[] = $t['name'] ?? '';
+            $tracks[] = [
+                'name'    => $t['name'] ?? '',
+                'spotify' => $t['external_urls']['spotify'] ?? '',
+            ];
         }
         $offset += count($items);
         $total = (int) ($data['total'] ?? 0);
     } while ($offset < $total && count($items) === $limit);
 
     $path = $cacheDir . '/' . $albumId . '.json';
-    file_put_contents($path, json_encode($tracks, JSON_UNESCAPED_UNICODE) . "\n");
+    file_put_contents($path, json_encode($tracks, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) . "\n");
     echo "Cached " . count($tracks) . " tracks for $albumTitle ($albumId)\n";
 }
 

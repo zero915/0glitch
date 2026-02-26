@@ -16,7 +16,7 @@ $albums = [
         ],
         'title'        => 'Halimaw',
         'track_count'  => 15,
-        'year'         => '2025',
+        'year'         => '2026',
         'description'  => 'A modern take on Filipino mythical creatures (monsters) told through music. Some are terrifying, some are romanticized, and some simply live in folklore.',
         'genres'       => ['Pop', 'Bossanova', 'Blues', 'Rock'],
     ],
@@ -50,9 +50,10 @@ $albums = [
     ],
 ];
 
-// Load track names from cache (from Spotify album link). Cache: cache/album-tracks/{spotify_album_id}.json = JSON array of track names.
+// Load per-track data from cache (name + spotify track URL). Cache: cache/album-tracks/{spotify_album_id}.json
+// Format: array of { "name": "...", "spotify": "https://open.spotify.com/track/..." }. Legacy: array of strings = names only.
 $cacheDir = __DIR__ . '/cache/album-tracks';
-function get_album_track_names_from_cache($cacheDir, $spotifyAlbumUrl) {
+function get_album_tracks_from_cache($cacheDir, $spotifyAlbumUrl) {
     if (!preg_match('#/album/([a-zA-Z0-9]+)#', $spotifyAlbumUrl ?? '', $m)) {
         return null;
     }
@@ -64,23 +65,33 @@ function get_album_track_names_from_cache($cacheDir, $spotifyAlbumUrl) {
     if ($json === false) {
         return null;
     }
-    $names = json_decode($json, true);
-    return is_array($names) ? $names : null;
+    $data = json_decode($json, true);
+    return is_array($data) ? $data : null;
 }
 
-// Build releases from albums: one entry per track, using album image/links/genres/year. Track title from cache (Spotify) or "Track N".
+// Build releases from albums: one entry per track. Links = per-track when in cache (Spotify track URL), else album link.
 $releases = [];
 foreach ($albums as $a) {
     $year = $a['year'] ?? '2025';
-    $releaseLinks = [
+    $albumLinks = [
         'amazon'  => $a['links']['amazon'] ?? '',
         'youtube' => $a['links']['youtube'] ?? '',
         'apple'   => $a['links']['apple'] ?? '',
         'spotify' => $a['links']['spotify'] ?? '',
     ];
-    $trackNames = get_album_track_names_from_cache($cacheDir, $a['links']['spotify'] ?? null);
+    $cachedTracks = get_album_tracks_from_cache($cacheDir, $a['links']['spotify'] ?? null);
     for ($n = 1; $n <= $a['track_count']; $n++) {
-        $trackName = (isset($trackNames[$n - 1]) && $trackNames[$n - 1] !== '') ? $trackNames[$n - 1] : 'Track ' . $n;
+        $track = isset($cachedTracks[$n - 1]) ? $cachedTracks[$n - 1] : null;
+        $trackName = 'Track ' . $n;
+        $releaseLinks = $albumLinks;
+        if (is_array($track)) {
+            $trackName = isset($track['name']) && $track['name'] !== '' ? $track['name'] : $trackName;
+            if (isset($track['spotify']) && $track['spotify'] !== '') {
+                $releaseLinks['spotify'] = $track['spotify'];
+            }
+        } elseif (is_string($track) && $track !== '') {
+            $trackName = $track;
+        }
         $releases[] = [
             'image'  => $a['image'],
             'links'  => $releaseLinks,
