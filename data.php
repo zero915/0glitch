@@ -96,7 +96,7 @@ $albums = [
             ['name' => 'Haplos (ng Diwata)',    'spotify' => 'https://open.spotify.com/track/727yNwaHS7a4J8DbQKwvSz', 'youtube' => '', 'image' => '', 'video' => ''],
             ['name' => 'Lingon (Aswang)',    'spotify' => 'https://open.spotify.com/track/26mvK2ix2XHPHQh5Dx7DVQ', 'youtube' => '', 'image' => '', 'video' => ''],
             ['name' => 'Itim (Busaw)',      'spotify' => 'https://open.spotify.com/track/4P74ZcNHdSG907B65k2FFj', 'youtube' => '', 'image' => '', 'video' => ''],
-            ['name' => 'Tunog (ng Tiktik)',     'spotify' => 'https://open.spotify.com/track/3UxGkPLue2SUHoFJx3DFvI', 'youtube' => '', 'image' => '', 'video' => ''],
+            ['name' => 'Tunog (Tiktik)',     'spotify' => 'https://open.spotify.com/track/3UxGkPLue2SUHoFJx3DFvI', 'youtube' => '', 'image' => '', 'video' => ''],
             ['name' => 'Liit (na Duwende)',      'spotify' => 'https://open.spotify.com/track/6VMRjEF6Kk8LdF94N1hq91', 'youtube' => '', 'image' => '', 'video' => ''],
             ['name' => 'Ahas (Zuma)',      'spotify' => 'https://open.spotify.com/track/65dfeqaDzT6P3rFkPwJC2F', 'youtube' => '', 'image' => '', 'video' => ''],
         ],
