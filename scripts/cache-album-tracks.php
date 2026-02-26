@@ -1,10 +1,12 @@
 #!/usr/bin/env php
 <?php
 /**
- * Fetch track names from Spotify for each album in data.php and write cache files.
- * data.php then uses these to show track titles on release cards (from the album’s Spotify link).
+ * Fetch track names + per-track Spotify URLs from Spotify for each album and write cache files.
+ * data.php uses cache when present; otherwise use manual 'tracks' in each album in data.php.
  *
- * Requires: SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET (env or .env).
+ * Requires: SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET (env or .env), and a Spotify Premium
+ * subscription (Spotify blocks Web API access without Premium). If you don't have Premium,
+ * add track names (and optional per-track 'spotify' URLs) in the 'tracks' array in data.php instead.
  *
  * Usage: php scripts/cache-album-tracks.php
  */
@@ -62,6 +64,9 @@ if (empty($albumIds)) {
     exit(0);
 }
 
+// Optional: market (e.g. US, PH). Empty = don't send market (can avoid 403 for some albums/regions).
+$market = getenv('SPOTIFY_MARKET') ?: ($_ENV['SPOTIFY_MARKET'] ?? '');
+
 // Token (using file_get_contents so cURL is not required)
 $tokenOpts = [
     'http' => [
@@ -96,6 +101,9 @@ foreach ($albumIds as $albumId => $albumTitle) {
 
     do {
         $url = 'https://api.spotify.com/v1/albums/' . urlencode($albumId) . '/tracks?limit=' . $limit . '&offset=' . $offset;
+        if ($market !== '') {
+            $url .= '&market=' . urlencode($market);
+        }
         $opts = [
             'http' => [
                 'method'  => 'GET',
@@ -105,12 +113,17 @@ foreach ($albumIds as $albumId => $albumTitle) {
         ];
         $body = @file_get_contents($url, false, stream_context_create($opts));
         $http = 0;
-        if (isset($http_response_header) && preg_match('/^HTTP\/\S+\s+(\d+)/', $http_response_header[0], $m)) {
-            $http = (int) $m[1];
+        if (isset($http_response_header) && preg_match('/^HTTP\/\S+\s+(\d+)/', $http_response_header[0], $hm)) {
+            $http = (int) $hm[1];
         }
 
         if ($http !== 200 || $body === false) {
             fwrite(STDERR, "Album $albumId ($albumTitle): API HTTP $http\n");
+            if ($body !== false && $body !== '') {
+                $err = json_decode($body, true);
+                $msg = isset($err['error']['message']) ? $err['error']['message'] : trim(substr($body, 0, 200));
+                fwrite(STDERR, "  Response: $msg\n");
+            }
             break;
         }
 

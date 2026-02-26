@@ -4,7 +4,8 @@
 // One non-empty link is chosen at random per card when rendering.
 
 // Albums: image, links (spotify, apple, youtube, amazon), title (album name), track_count, year, description, genres
-// Track names: loaded from cache/album-tracks/{spotify_album_id}.json when present (run: php scripts/cache-album-tracks.php)
+// Track names + per-track links: (1) cache from scripts/cache-album-tracks.php if you have Spotify Premium, OR
+// (2) manual 'tracks': array of strings (name only) or array of ['name' => '...', 'spotify' => '...', 'youtube' => '...'] for per-track links.
 $albums = [
     [
         'image'        => 'images/halimaw.jpg',
@@ -33,6 +34,16 @@ $albums = [
         'year'         => '2025',
         'description'  => 'Full-length upgrade. New sounds, same malfunction.',
         'genres'       => ['Pop', 'Indie', 'Rock', 'Rap'],
+        // Per-track: name + optional 'spotify' and 'youtube' URLs. Omit or leave '' to use album link.
+        'tracks'       => [
+            ['name' => 'U + Me', 'spotify' => 'https://open.spotify.com/track/2IGcIbNpaUGi4IjRSHPr7N', 'youtube' => 'https://music.youtube.com/watch?v=fyh4nzAW9-4'],
+            ['name' => 'Lucky Charm', 'spotify' => '', 'youtube' => 'https://music.youtube.com/watch?v=hK0AQD-YseQ'],
+            ['name' => 'Sweet Crazy', 'spotify' => '', 'youtube' => 'https://music.youtube.com/watch?v=FvxK_jo_5IQ'],
+            ['name' => 'Sinta', 'spotify' => 'https://open.spotify.com/track/7pHcQDiZuBur66S41e2cq2', 'youtube' => 'https://music.youtube.com/watch?v=JL19hpZ400E'],
+            ['name' => 'iMove', 'spotify' => 'https://open.spotify.com/track/4ssMzGURBr7JcVEsFrkHj8', 'youtube' => 'https://music.youtube.com/watch?v=7uIyTu4VF2I'],
+            ['name' => 'Sayaw Sa Hangin', 'spotify' => 'https://open.spotify.com/track/088yyXF6p9vvXtm7OuV27o', 'youtube' => 'https://music.youtube.com/watch?v=QUBgh4C_eaw'],
+            'Track 7', 'Track 8', 'Track 9', 'Track 10', 'Track 11', 'Track 12', 'Track 13', 'Track 14', 'Track 15',
+        ],
     ],
     [
         'image'        => 'images/merry-christmas-sayo.jpg',
@@ -80,14 +91,18 @@ foreach ($albums as $a) {
         'spotify' => $a['links']['spotify'] ?? '',
     ];
     $cachedTracks = get_album_tracks_from_cache($cacheDir, $a['links']['spotify'] ?? null);
+    $manualTracks = $a['tracks'] ?? null;
     for ($n = 1; $n <= $a['track_count']; $n++) {
-        $track = isset($cachedTracks[$n - 1]) ? $cachedTracks[$n - 1] : null;
+        $track = isset($cachedTracks[$n - 1]) ? $cachedTracks[$n - 1] : (isset($manualTracks[$n - 1]) ? $manualTracks[$n - 1] : null);
         $trackName = 'Track ' . $n;
         $releaseLinks = $albumLinks;
         if (is_array($track)) {
             $trackName = isset($track['name']) && $track['name'] !== '' ? $track['name'] : $trackName;
             if (isset($track['spotify']) && $track['spotify'] !== '') {
                 $releaseLinks['spotify'] = $track['spotify'];
+            }
+            if (isset($track['youtube']) && $track['youtube'] !== '') {
+                $releaseLinks['youtube'] = $track['youtube'];
             }
         } elseif (is_string($track) && $track !== '') {
             $trackName = $track;
