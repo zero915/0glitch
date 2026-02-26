@@ -58,6 +58,10 @@ $albums = [
         'year'         => '2025',
         'description'  => 'Holiday vibes and winter feels. A short run of seasonal tracks.',
         'genres'       => ['Pop', 'Holiday', 'R&B', 'Rock'],
+        // Add real track names and optional 'spotify' / 'youtube' per track so modal shows correct title and links
+        'tracks'       => [
+            'Track 1', 'Track 2', 'Track 3', 'Track 4', 'Track 5', 'Track 6', 'Track 7', 'Track 8', 'Track 9',
+        ],
     ],
 ];
 
@@ -80,7 +84,7 @@ function get_album_tracks_from_cache($cacheDir, $spotifyAlbumUrl) {
     return is_array($data) ? $data : null;
 }
 
-// Build releases from albums: one entry per track. Links = per-track when in cache (Spotify track URL), else album link.
+// Build releases from albums: one entry per track. Manual 'tracks' in album override cache so your data.php wins.
 $releases = [];
 foreach ($albums as $a) {
     $year = $a['year'] ?? '2025';
@@ -90,10 +94,16 @@ foreach ($albums as $a) {
         'apple'   => $a['links']['apple'] ?? '',
         'spotify' => $a['links']['spotify'] ?? '',
     ];
-    $cachedTracks = get_album_tracks_from_cache($cacheDir, $a['links']['spotify'] ?? null);
     $manualTracks = $a['tracks'] ?? null;
+    $cachedTracks = get_album_tracks_from_cache($cacheDir, $a['links']['spotify'] ?? null);
     for ($n = 1; $n <= $a['track_count']; $n++) {
-        $track = isset($cachedTracks[$n - 1]) ? $cachedTracks[$n - 1] : (isset($manualTracks[$n - 1]) ? $manualTracks[$n - 1] : null);
+        // Prefer manual tracks over cache so titles and per-track links in data.php are always used when set
+        $track = null;
+        if (!empty($manualTracks) && isset($manualTracks[$n - 1])) {
+            $track = $manualTracks[$n - 1];
+        } elseif (!empty($cachedTracks) && isset($cachedTracks[$n - 1])) {
+            $track = $cachedTracks[$n - 1];
+        }
         $trackName = 'Track ' . $n;
         // Start from album links, then override with per-track links so modal uses track URLs
         $releaseLinks = [
