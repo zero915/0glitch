@@ -161,7 +161,7 @@ function release_embed_urls(array $links) {
                     <div class="relative rounded-2xl overflow-hidden bg-glitch-surface aspect-square about-hero-media">
                         <img src="images/zero-glitch.jpg" alt="Zero Glitch Artist Portrait" class="about-hero-poster w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500">
                         <video class="about-hero-video absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300" muted loop playsinline preload="metadata" aria-hidden="true">
-                            <source src="video/zero-glitch.mp4" type="video/mp4">
+                            <source src="videos/zero-glitch.mp4" type="video/mp4">
                         </video>
                         <div class="absolute inset-0 bg-gradient-to-t from-glitch-dark via-transparent to-transparent pointer-events-none"></div>
                     </div>
