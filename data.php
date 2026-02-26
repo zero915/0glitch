@@ -144,6 +144,8 @@ foreach ($albums as $a) {
             'apple'   => $a['links']['apple'] ?? '',
             'spotify' => $a['links']['spotify'] ?? '',
         ];
+        $trackImage = '';
+        $trackVideo = '';
         if (is_array($track)) {
             $trackName = isset($track['name']) && $track['name'] !== '' ? $track['name'] : $trackName;
             if (isset($track['spotify']) && $track['spotify'] !== '') {
@@ -152,11 +154,15 @@ foreach ($albums as $a) {
             if (isset($track['youtube']) && $track['youtube'] !== '') {
                 $releaseLinks['youtube'] = $track['youtube'];
             }
+            $trackImage = isset($track['image']) && $track['image'] !== '' ? $track['image'] : '';
+            $trackVideo = isset($track['video']) && $track['video'] !== '' ? $track['video'] : '';
         } elseif (is_string($track) && $track !== '') {
             $trackName = $track;
         }
+        // Thumbnail: track image if set, else album image (used as poster and while video loads)
         $releases[] = [
-            'image'  => $a['image'],
+            'image'  => $trackImage !== '' ? $trackImage : $a['image'],
+            'video'  => $trackVideo,
             'links'  => $releaseLinks,
             'title'  => $trackName,
             'album'  => $a['title'],

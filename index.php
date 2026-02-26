@@ -223,10 +223,12 @@ function release_embed_urls(array $links) {
                     $externalLink = !empty($releaseLinks) ? $releaseLinks[array_rand($releaseLinks)] : '';
                     // Use this release's track links for modal (not album); embeds are built from same $links
                 ?>
+                <?php $trackVideo = $r['video'] ?? ''; $trackImage = $r['image'] ?? ''; ?>
                 <div class="group relative bg-glitch-dark rounded-xl overflow-hidden border border-white/5 hover:border-glitch-cyan/50 transition-all duration-300 hover:transform hover:scale-105 block cursor-pointer"
                      role="button" tabindex="0" data-track-card
                      data-title="<?php echo htmlspecialchars($r['title']); ?>"
                      data-album="<?php echo htmlspecialchars($r['album']); ?>"
+                     data-video="<?php echo htmlspecialchars($trackVideo); ?>"
                      data-youtube-embed="<?php echo htmlspecialchars($embeds['youtube']); ?>"
                      data-spotify-embed="<?php echo htmlspecialchars($embeds['spotify']); ?>"
                      data-spotify-link="<?php echo htmlspecialchars($links['spotify'] ?? ''); ?>"
@@ -235,7 +237,12 @@ function release_embed_urls(array $links) {
                      data-apple-link="<?php echo htmlspecialchars($links['apple'] ?? ''); ?>"
                      data-external-link="<?php echo htmlspecialchars($externalLink); ?>">
                     <div class="aspect-square overflow-hidden relative">
-                        <img src="<?php echo htmlspecialchars($r['image']); ?>" alt="<?php echo htmlspecialchars($r['title']); ?> - Album Cover" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <img src="<?php echo htmlspecialchars($trackImage); ?>" alt="<?php echo htmlspecialchars($r['title']); ?> - Cover" class="track-card-poster w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <?php if ($trackVideo !== ''): ?>
+                        <video class="track-card-video absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300" muted loop playsinline autoplay preload="metadata" aria-hidden="true">
+                            <source src="<?php echo htmlspecialchars($trackVideo); ?>" type="video/mp4">
+                        </video>
+                        <?php endif; ?>
                         <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                             <span class="w-16 h-16 bg-glitch-cyan rounded-full flex items-center justify-center text-glitch-dark group-hover:scale-110 transition-transform">
                                 <i data-lucide="play" class="w-8 h-8 fill-current"></i>
@@ -533,6 +540,27 @@ function release_embed_urls(array $links) {
         });
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && modal.classList.contains('flex')) closeModal();
+        });
+
+        // Track card thumbnails: show video when it can play (loop, muted); keep image visible until then
+        document.querySelectorAll('.track-card-video').forEach(function(video) {
+            function showVideo() {
+                video.classList.remove('opacity-0');
+                var card = video.closest('[data-track-card]');
+                if (card) {
+                    var poster = card.querySelector('.track-card-poster');
+                    if (poster) poster.classList.add('opacity-0');
+                }
+            }
+            if (video.readyState >= 2) showVideo();
+            else video.addEventListener('canplay', showVideo, { once: true });
+            video.addEventListener('error', function() {
+                var card = video.closest('[data-track-card]');
+                if (card) {
+                    var poster = card.querySelector('.track-card-poster');
+                    if (poster) poster.classList.remove('opacity-0');
+                }
+            }, { once: true });
         });
     })();
     </script>
