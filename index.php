@@ -7,8 +7,25 @@
 $data = require __DIR__ . '/data.php';
 $releases = $data['releases'];
 $albums = $data['albums'];
-$platforms = $data['platforms'];
 $platformHover = $data['platformHover'];
+
+// Platforms: show max 8 — always Spotify, Apple Music, YouTube, Amazon Music; then 4 random from the rest
+$allPlatforms = $data['platforms'];
+$alwaysShowNames = ['Spotify', 'Apple Music', 'YouTube', 'Amazon Music'];
+$alwaysPlatforms = [];
+foreach ($alwaysShowNames as $name) {
+    foreach ($allPlatforms as $p) {
+        if (($p['name'] ?? '') === $name) {
+            $alwaysPlatforms[] = $p;
+            break;
+        }
+    }
+}
+$otherPlatforms = array_values(array_filter($allPlatforms, function ($p) use ($alwaysShowNames) {
+    return !in_array($p['name'] ?? '', $alwaysShowNames);
+}));
+shuffle($otherPlatforms);
+$platforms = array_merge($alwaysPlatforms, array_slice($otherPlatforms, 0, 4));
 
 // Build YouTube and Spotify embed URLs for a release (for in-site player). Prefer YouTube when available.
 function release_embed_urls(array $links) {

@@ -248,6 +248,22 @@ return [
         'gradient'  => 'from-green-400 to-emerald-600',
         'hover'     => 'green',
     ],
+    [
+        'name'      => 'FLO',
+        'url'       => 'https://www.music-flo.com/detail/artist/412608290/',
+        'icon'      => 'music',
+        'icon_slug' => null,
+        'gradient'  => 'from-orange-400 to-amber-600',
+        'hover'     => 'orange',
+    ],
+    [
+        'name'      => 'Boomplay',
+        'url'       => 'https://www.boomplay.com/artists/117137292',
+        'icon'      => 'radio',
+        'icon_slug' => null,
+        'gradient'  => 'from-amber-500 to-orange-600',
+        'hover'     => 'orange',
+    ],
     ],
 
     // Platform hover styles by key (border + shadow + text color)
@@ -257,6 +273,7 @@ return [
     'blue'   => 'hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(0,150,255,0.3)] group-hover:text-blue-400',
     'purple' => 'hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(147,51,234,0.3)] group-hover:text-purple-400',
     'cyan'   => 'hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.3)] group-hover:text-cyan-400',
+    'orange' => 'hover:border-orange-500/50 hover:shadow-[0_0_30px_rgba(249,115,22,0.3)] group-hover:text-orange-400',
     ],
 
     // Subscribe form → Google Forms (0glitch subscribe)
