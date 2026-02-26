@@ -37,6 +37,11 @@ function release_embed_urls(array $links) {
     <title>Zero Glitch | Musician + Song Writer</title>
     <meta name="description" content="Official website of Zero Glitch - Musician and Song Writer. Stream on Spotify, Apple Music, YouTube Music, and more.">
     
+    <!-- Favicon (0G logo, white on transparent) -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
