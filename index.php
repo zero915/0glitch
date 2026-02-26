@@ -216,10 +216,12 @@ function release_embed_urls(array $links) {
                 shuffle($releasesShown);
                 $releasesShown = array_slice($releasesShown, 0, 4);
                 foreach ($releasesShown as $r):
-                    $releaseLinks = isset($r['links']) ? array_filter($r['links']) : [];
-                    $embeds = release_embed_urls($r['links'] ?? []);
+                    $links = $r['links'] ?? [];
+                    $releaseLinks = array_filter($links);
+                    $embeds = release_embed_urls($links);
                     $hasEmbed = $embeds['youtube'] !== '' || $embeds['spotify'] !== '';
                     $externalLink = !empty($releaseLinks) ? $releaseLinks[array_rand($releaseLinks)] : '';
+                    // Use this release's track links for modal (not album); embeds are built from same $links
                 ?>
                 <div class="group relative bg-glitch-dark rounded-xl overflow-hidden border border-white/5 hover:border-glitch-cyan/50 transition-all duration-300 hover:transform hover:scale-105 block cursor-pointer"
                      role="button" tabindex="0" data-track-card
@@ -227,10 +229,10 @@ function release_embed_urls(array $links) {
                      data-album="<?php echo htmlspecialchars($r['album']); ?>"
                      data-youtube-embed="<?php echo htmlspecialchars($embeds['youtube']); ?>"
                      data-spotify-embed="<?php echo htmlspecialchars($embeds['spotify']); ?>"
-                     data-spotify-link="<?php echo htmlspecialchars($releaseLinks['spotify'] ?? ''); ?>"
-                     data-youtube-link="<?php echo htmlspecialchars($releaseLinks['youtube'] ?? ''); ?>"
-                     data-amazon-link="<?php echo htmlspecialchars($releaseLinks['amazon'] ?? ''); ?>"
-                     data-apple-link="<?php echo htmlspecialchars($releaseLinks['apple'] ?? ''); ?>"
+                     data-spotify-link="<?php echo htmlspecialchars($links['spotify'] ?? ''); ?>"
+                     data-youtube-link="<?php echo htmlspecialchars($links['youtube'] ?? ''); ?>"
+                     data-amazon-link="<?php echo htmlspecialchars($links['amazon'] ?? ''); ?>"
+                     data-apple-link="<?php echo htmlspecialchars($links['apple'] ?? ''); ?>"
                      data-external-link="<?php echo htmlspecialchars($externalLink); ?>">
                     <div class="aspect-square overflow-hidden relative">
                         <img src="<?php echo htmlspecialchars($r['image']); ?>" alt="<?php echo htmlspecialchars($r['title']); ?> - Album Cover" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
@@ -265,27 +267,27 @@ function release_embed_urls(array $links) {
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <?php foreach ($albums as $a):
-                    $links = isset($a['links']) ? array_filter($a['links']) : [];
-                    $hasSpotify = !empty($links['spotify']);
-                    $hasApple = !empty($links['apple']);
-                    $hasYoutube = !empty($links['youtube']);
-                    $hasAmazon = !empty($links['amazon']);
+                    $albumLinks = $a['links'] ?? [];
+                    $hasSpotify = !empty($albumLinks['spotify']);
+                    $hasApple = !empty($albumLinks['apple']);
+                    $hasYoutube = !empty($albumLinks['youtube']);
+                    $hasAmazon = !empty($albumLinks['amazon']);
                 ?>
                 <div class="bg-glitch-surface rounded-xl overflow-hidden border border-white/5 hover:border-glitch-cyan/30 transition-all duration-300 flex flex-col">
                     <div class="aspect-square overflow-hidden relative flex-shrink-0 group/cover">
                         <img src="<?php echo htmlspecialchars($a['image']); ?>" alt="<?php echo htmlspecialchars($a['title']); ?> - Album Cover" class="w-full h-full object-cover">
                         <div class="absolute bottom-0 left-0 right-0 flex justify-center gap-2 p-3 bg-gradient-to-t from-black/80 via-black/50 to-transparent">
                             <?php if ($hasSpotify): ?>
-                            <a href="<?php echo htmlspecialchars($links['spotify']); ?>" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-full border-2 border-white/50 bg-white/5 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 hover:border-white/80 hover:scale-110 transition-all duration-200" title="Listen on Spotify"><i data-lucide="music-2" class="w-4 h-4" stroke-width="2"></i></a>
+                            <a href="<?php echo htmlspecialchars($albumLinks['spotify']); ?>" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-full border-2 border-white/50 bg-white/5 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 hover:border-white/80 hover:scale-110 transition-all duration-200" title="Listen on Spotify"><i data-lucide="music-2" class="w-4 h-4" stroke-width="2"></i></a>
                             <?php endif; ?>
                             <?php if ($hasApple): ?>
-                            <a href="<?php echo htmlspecialchars($links['apple']); ?>" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-full border-2 border-white/50 bg-white/5 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 hover:border-white/80 hover:scale-110 transition-all duration-200" title="Listen on Apple Music"><i data-lucide="apple" class="w-4 h-4" stroke-width="2"></i></a>
+                            <a href="<?php echo htmlspecialchars($albumLinks['apple']); ?>" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-full border-2 border-white/50 bg-white/5 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 hover:border-white/80 hover:scale-110 transition-all duration-200" title="Listen on Apple Music"><i data-lucide="apple" class="w-4 h-4" stroke-width="2"></i></a>
                             <?php endif; ?>
                             <?php if ($hasYoutube): ?>
-                            <a href="<?php echo htmlspecialchars($links['youtube']); ?>" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-full border-2 border-white/50 bg-white/5 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 hover:border-white/80 hover:scale-110 transition-all duration-200" title="Listen on YouTube Music"><i data-lucide="play-circle" class="w-4 h-4" stroke-width="2"></i></a>
+                            <a href="<?php echo htmlspecialchars($albumLinks['youtube']); ?>" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-full border-2 border-white/50 bg-white/5 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 hover:border-white/80 hover:scale-110 transition-all duration-200" title="Listen on YouTube Music"><i data-lucide="play-circle" class="w-4 h-4" stroke-width="2"></i></a>
                             <?php endif; ?>
                             <?php if ($hasAmazon): ?>
-                            <a href="<?php echo htmlspecialchars($links['amazon']); ?>" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-full border-2 border-white/50 bg-white/5 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 hover:border-white/80 hover:scale-110 transition-all duration-200" title="Listen on Amazon Music"><i data-lucide="headphones" class="w-4 h-4" stroke-width="2"></i></a>
+                            <a href="<?php echo htmlspecialchars($albumLinks['amazon']); ?>" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-full border-2 border-white/50 bg-white/5 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 hover:border-white/80 hover:scale-110 transition-all duration-200" title="Listen on Amazon Music"><i data-lucide="headphones" class="w-4 h-4" stroke-width="2"></i></a>
                             <?php endif; ?>
                         </div>
                     </div>

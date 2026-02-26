@@ -95,7 +95,13 @@ foreach ($albums as $a) {
     for ($n = 1; $n <= $a['track_count']; $n++) {
         $track = isset($cachedTracks[$n - 1]) ? $cachedTracks[$n - 1] : (isset($manualTracks[$n - 1]) ? $manualTracks[$n - 1] : null);
         $trackName = 'Track ' . $n;
-        $releaseLinks = $albumLinks;
+        // Start from album links, then override with per-track links so modal uses track URLs
+        $releaseLinks = [
+            'amazon'  => $a['links']['amazon'] ?? '',
+            'youtube' => $a['links']['youtube'] ?? '',
+            'apple'   => $a['links']['apple'] ?? '',
+            'spotify' => $a['links']['spotify'] ?? '',
+        ];
         if (is_array($track)) {
             $trackName = isset($track['name']) && $track['name'] !== '' ? $track['name'] : $trackName;
             if (isset($track['spotify']) && $track['spotify'] !== '') {
