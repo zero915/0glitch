@@ -264,6 +264,14 @@ return [
         'gradient'  => 'from-amber-500 to-orange-600',
         'hover'     => 'orange',
     ],
+    [
+        'name'      => 'Claro Música',
+        'url'       => 'https://www.claromusica.com/artist/13860574/',
+        'icon'      => 'music',
+        'icon_slug' => 'claromusica',
+        'gradient'  => 'from-red-500 to-rose-600',
+        'hover'     => 'red',
+    ],
     ],
 
     // Platform hover styles by key (border + shadow + text color)
