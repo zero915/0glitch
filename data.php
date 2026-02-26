@@ -1,103 +1,10 @@
 <?php
 
-// Latest Releases data: image, links (amazon, youtube, apple, spotify — omit or leave empty to skip), title, album, year, genres
-// One non-empty link is chosen at random per card when rendering
-return [
-    'releases' => [
-    [
-        'image'   => 'images/u+me.jpg',
-        'links'   => [
-            'amazon'  => 'https://music.amazon.com/albums/B0G5YCSNVS?marketplaceId=ATVPDKIKX0DER&musicTerritory=US&ref=dm_sh_aIlomn2Qoo0ERtdMhlOSvJ7wt&trackAsin=B0G5YPTZCD',
-            'youtube' => 'https://music.youtube.com/watch?v=fyh4nzAW9-4',
-            'apple'   => 'https://music.apple.com/us/song/u-me/1859919330',
-            'spotify' => 'https://open.spotify.com/track/2IGcIbNpaUGi4IjRSHPr7N?si=c592c77933c9405d',
-        ],
-        'title'   => 'U + Me',
-        'album'   => 'System Upgrade',
-        'year'    => '2025',
-        'genres'  => ['Pop', 'Indie'],
-    ],
-    [
-        'image'   => 'images/lucky-charm.jpg',
-        'links'   => [
-            'amazon'  => 'https://music.amazon.com/albums/B0G5YCSNVS?marketplaceId=ATVPDKIKX0DER&musicTerritory=US&ref=dm_sh_Crbv1VQt9R3rsrty8T6QeVPvv&trackAsin=B0G5YB5F39',
-            'youtube' => 'https://music.youtube.com/watch?v=hK0AQD-YseQ',
-            'apple'   => 'https://music.apple.com/us/song/lucky-charm/1859919334',
-            'spotify' => 'https://open.spotify.com/album/7BLkmDx9ObGX9xh7Udx5pB?si=yW9s_GFsSliERMs0eQwFVQ',
-        ],
-        'title'   => 'Lucky Charm',
-        'album'   => 'System Upgrade',
-        'year'    => '2025',
-        'genres'  => ['Pop', 'Indie'],
-    ],
-    [
-        'image'   => 'images/sweet-crazy.jpg',
-        'links'   => [
-            'amazon'  => 'https://music.amazon.com/albums/B0G5YCSNVS?marketplaceId=ATVPDKIKX0DER&musicTerritory=US&ref=dm_sh_5AJtPsqVtqbh6Y0MFJuiWODS7&trackAsin=B0G5YLCT3N',
-            'youtube' => 'https://music.youtube.com/watch?v=FvxK_jo_5IQ',
-            'apple'   => 'https://music.apple.com/us/song/sweet-crazy/1859919333',
-            'spotify' => 'https://open.spotify.com/album/1ulVWzobT9BDcKcG389NXr?si=AMsK-oumThmexwEgRFAo8A',
-        ],
-        'title'   => 'Sweet Crazy',
-        'album'   => 'System Upgrade',
-        'year'    => '2025',
-        'genres'  => ['Pop', 'R&B'],
-    ],
-    [
-        'image'   => 'images/sinta.jpg',
-        'links'   => [
-            'amazon'  => '',
-            'youtube' => 'https://music.youtube.com/watch?v=JL19hpZ400E',
-            'apple'   => 'https://music.apple.com/us/song/sinta/1859919341',
-            'spotify' => 'https://open.spotify.com/track/7pHcQDiZuBur66S41e2cq2?si=aa2d7fecf34a4f14',
-        ],
-        'title'   => 'Sinta',
-        'album'   => 'System Upgrade',
-        'year'    => '2025',
-        'genres'  => ['Indie', 'Pop'],
-    ],
-    [
-        'image'   => 'images/imove.jpg',
-        'links'   => [
-            'amazon'  => 'https://music.amazon.com/albums/B0G5YCSNVS?marketplaceId=ATVPDKIKX0DER&musicTerritory=US&ref=dm_sh_FjqQ7bQX36xoKofEE2KMPKhQA&trackAsin=B0G5YK7MJ4',
-            'youtube' => 'https://music.youtube.com/watch?v=7uIyTu4VF2I',
-            'apple'   => 'https://music.apple.com/us/song/imove/1859919338',
-            'spotify' => 'https://open.spotify.com/track/4ssMzGURBr7JcVEsFrkHj8?si=2158a85f93f24553',
-        ],
-        'title'   => 'iMove',
-        'album'   => 'System Upgrade',
-        'year'    => '2025',
-        'genres'  => ['Rock', 'Metal'],
-    ],
-    [
-        'image'   => 'images/imove-dance.jpg',
-        'links'   => [
-            'amazon'  => 'https://music.amazon.com/albums/B0GMXZNQ38?marketplaceId=ATVPDKIKX0DER&musicTerritory=US&ref=dm_sh_InzRxdDE4pTxoGMfTosUYHgO0&trackAsin=B0GMXZBH9K',
-            'youtube' => 'https://music.youtube.com/watch?v=DHY8a3oPZL4',
-            'apple'   => 'https://music.apple.com/us/song/imove-dance-version/1876373430',
-            'spotify' => 'https://open.spotify.com/track/5Du3PEAGB9kE5AphQU5RWp?si=44a09c3e765449c7',
-        ],
-        'title'   => 'iMove (Dance Version)',
-        'album'   => 'Single',
-        'year'    => '2026',
-        'genres'  => ['Rock', 'Metal'],
-    ],
-    [
-        'image'   => 'images/sayaw-sa-hangin.jpg',
-        'links'   => [
-            'amazon'  => 'https://music.amazon.com/albums/B0G5YCSNVS?marketplaceId=ATVPDKIKX0DER&musicTerritory=US&ref=dm_sh_biy7D74xNE6jvsHQCycHJfdso&trackAsin=B0G5YS979X',
-            'youtube' => 'https://music.youtube.com/watch?v=QUBgh4C_eaw',
-            'apple'   => 'https://music.apple.com/us/song/sayaw-sa-hangin/1859919612',
-            'spotify' => 'https://open.spotify.com/track/088yyXF6p9vvXtm7OuV27o?si=7c66c7d216c64ee0',
-        ],
-        'title'   => 'Sayaw Sa Hangin',
-        'album'   => 'System Upgrade',
-        'year'    => '2025',
-        'genres'  => ['Rock', 'Metal'],
-    ],
-    ],
-    // Albums: image, links (spotify, apple, youtube, amazon), title (album name), track_count, description, genres
-    'albums' => [
+// Releases are derived from albums: each album is expanded into track_count entries (image, links, title "Track N", album, year, genres).
+// One non-empty link is chosen at random per card when rendering.
+
+// Albums: image, links (spotify, apple, youtube, amazon), title (album name), track_count, year, description, genres
+$albums = [
     [
         'image'        => 'images/halimaw.jpg',
         'links'        => [
@@ -108,6 +15,7 @@ return [
         ],
         'title'        => 'Halimaw',
         'track_count'  => 15,
+        'year'         => '2025',
         'description'  => 'A modern take on Filipino mythical creatures (monsters) told through music. Some are terrifying, some are romanticized, and some simply live in folklore.',
         'genres'       => ['Pop', 'Bossanova', 'Blues', 'Rock'],
     ],
@@ -121,6 +29,7 @@ return [
         ],
         'title'        => 'System Upgrade',
         'track_count'  => 15,
+        'year'         => '2025',
         'description'  => 'Full-length upgrade. New sounds, same malfunction.',
         'genres'       => ['Pop', 'Indie', 'Rock', 'Rap'],
     ],
@@ -134,10 +43,37 @@ return [
         ],
         'title'        => 'Merry Christmas, Sayo',
         'track_count'  => 9,
+        'year'         => '2025',
         'description'  => 'Holiday vibes and winter feels. A short run of seasonal tracks.',
         'genres'       => ['Pop', 'Holiday', 'R&B', 'Rock'],
     ],
-    ],
+];
+
+// Build releases from albums: one entry per track, using album image/links/genres/year
+$releases = [];
+foreach ($albums as $a) {
+    $year = $a['year'] ?? '2025';
+    $releaseLinks = [
+        'amazon'  => $a['links']['amazon'] ?? '',
+        'youtube' => $a['links']['youtube'] ?? '',
+        'apple'   => $a['links']['apple'] ?? '',
+        'spotify' => $a['links']['spotify'] ?? '',
+    ];
+    for ($n = 1; $n <= $a['track_count']; $n++) {
+        $releases[] = [
+            'image'  => $a['image'],
+            'links'  => $releaseLinks,
+            'title'  => 'Track ' . $n,
+            'album'  => $a['title'],
+            'year'   => $year,
+            'genres' => $a['genres'],
+        ];
+    }
+}
+
+return [
+    'releases' => $releases,
+    'albums'   => $albums,
 
     // Platforms data: name, url, icon (lucide), gradient classes, hover border/text
     'platforms' => [
