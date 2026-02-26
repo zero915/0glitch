@@ -360,7 +360,9 @@ function release_embed_urls(array $links) {
                 <?php foreach ($platforms as $p): ?>
                 <a href="<?php echo htmlspecialchars($p['url']); ?>" target="_blank" rel="noopener noreferrer" class="group relative bg-glitch-surface p-6 rounded-2xl border border-white/5 transition-all duration-300 hover:transform hover:scale-110 <?php echo $platformHover[$p['hover']] ?? $platformHover['green']; ?> flex flex-col items-center justify-center gap-3">
                     <div class="w-16 h-16 rounded-full bg-gradient-to-br <?php echo htmlspecialchars($p['gradient']); ?> flex items-center justify-center text-white shadow-lg group-hover:rotate-12 transition-transform">
-                        <?php if (!empty($p['icon_slug'])): ?>
+                        <?php if (!empty($p['icon_data'])): ?>
+                        <img src="<?php echo htmlspecialchars($p['icon_data']); ?>" alt="<?php echo htmlspecialchars($p['name']); ?> icon" class="w-8 h-8 object-contain" width="32" height="32">
+                        <?php elseif (!empty($p['icon_slug'])): ?>
                         <img src="icons/<?php echo htmlspecialchars($p['icon_slug']); ?>.svg" alt="<?php echo htmlspecialchars($p['name']); ?> icon" class="w-8 h-8" width="32" height="32">
                         <?php else: ?>
                         <i data-lucide="<?php echo htmlspecialchars($p['icon']); ?>" class="w-8 h-8"></i>
