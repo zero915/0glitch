@@ -286,6 +286,8 @@ function release_embed_urls(array $links) {
                     $hasApple = !empty($albumLinks['apple']);
                     $hasYoutube = !empty($albumLinks['youtube']);
                     $hasAmazon = !empty($albumLinks['amazon']);
+                    $hasIheart = !empty($albumLinks['iheart']);
+                    $hasTidal = !empty($albumLinks['tidal']);
                 ?>
                 <div class="bg-glitch-surface rounded-xl overflow-hidden border border-white/5 hover:border-glitch-cyan/30 transition-all duration-300 flex flex-col">
                     <div class="aspect-square overflow-hidden relative flex-shrink-0 group/cover">
@@ -302,6 +304,12 @@ function release_embed_urls(array $links) {
                             <?php endif; ?>
                             <?php if ($hasAmazon): ?>
                             <a href="<?php echo htmlspecialchars($albumLinks['amazon']); ?>" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-full border-2 border-white/50 bg-white/5 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 hover:border-white/80 hover:scale-110 transition-all duration-200" title="Listen on Amazon Music"><img src="icons/amazon.svg" alt="Amazon Music" class="w-4 h-4" width="16" height="16"></a>
+                            <?php endif; ?>
+                            <?php if ($hasIheart): ?>
+                            <a href="<?php echo htmlspecialchars($albumLinks['iheart']); ?>" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-full border-2 border-white/50 bg-white/5 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 hover:border-white/80 hover:scale-110 transition-all duration-200" title="Listen on iHeart Radio"><img src="icons/iheartradio.svg" alt="iHeart Radio" class="w-4 h-4" width="16" height="16"></a>
+                            <?php endif; ?>
+                            <?php if ($hasTidal): ?>
+                            <a href="<?php echo htmlspecialchars($albumLinks['tidal']); ?>" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-full border-2 border-white/50 bg-white/5 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 hover:border-white/80 hover:scale-110 transition-all duration-200" title="Listen on Tidal"><img src="icons/tidal.svg" alt="Tidal" class="w-4 h-4" width="16" height="16"></a>
                             <?php endif; ?>
                         </div>
                     </div>
