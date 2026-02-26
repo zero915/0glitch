@@ -51,7 +51,7 @@ $albums = [
             'iheart'  => 'https://www.iheart.com/artist/zero-glitch-48171167/albums/merry-christmas-sayo-359232860',
             'tidal'   => 'https://tidal.com/album/471778908/',
         ],
-        'title'        => 'Merry Christmas, Sayo',
+        'title'        => "Merry Christmas Sa'yo",
         'track_count'  => 9,
         'year'         => '2025',
         'description'  => 'Holiday vibes and winter feels. A short run of seasonal tracks.',
