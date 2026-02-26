@@ -159,9 +159,11 @@ function release_embed_urls(array $links) {
                 <div class="relative group">
                     <div class="absolute -inset-1 bg-gradient-to-r from-glitch-cyan to-glitch-magenta rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
                     <div class="relative rounded-2xl overflow-hidden bg-glitch-surface aspect-square">
-                        <!-- Replace src below with your actual photo URL -->
-                        <img src="images/zero-glitch.jpg" alt="Zero Glitch Artist Portrait" class="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-glitch-dark via-transparent to-transparent"></div>
+                        <img src="images/zero-glitch.jpg" alt="Zero Glitch Artist Portrait" class="about-hero-poster w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity duration-500">
+                        <video class="about-hero-video absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300" muted loop playsinline autoplay preload="metadata" aria-hidden="true">
+                            <source src="video/zero-glitch.mp4" type="video/mp4">
+                        </video>
+                        <div class="absolute inset-0 bg-gradient-to-t from-glitch-dark via-transparent to-transparent pointer-events-none"></div>
                     </div>
                 </div>
                 
@@ -541,6 +543,18 @@ function release_embed_urls(array $links) {
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && modal.classList.contains('flex')) closeModal();
         });
+
+        // About "Breaking the Silence": show video when it can play (loop, muted); keep image visible until then
+        var aboutVideo = document.querySelector('.about-hero-video');
+        if (aboutVideo) {
+            function showAboutVideo() {
+                aboutVideo.classList.remove('opacity-0');
+                var poster = document.querySelector('.about-hero-poster');
+                if (poster) poster.classList.add('opacity-0');
+            }
+            if (aboutVideo.readyState >= 2) showAboutVideo();
+            else aboutVideo.addEventListener('canplay', showAboutVideo, { once: true });
+        }
 
         // Track card thumbnails: show video when it can play (loop, muted); keep image visible until then
         document.querySelectorAll('.track-card-video').forEach(function(video) {
