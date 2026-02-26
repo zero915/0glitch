@@ -10,13 +10,15 @@ $albums = $data['albums'];
 $platforms = $data['platforms'];
 $platformHover = $data['platformHover'];
 
-// Build YouTube and Spotify embed URLs for a release (for in-site player)
+// Build YouTube and Spotify embed URLs for a release (for in-site player). Prefer YouTube when available.
 function release_embed_urls(array $links) {
     $out = ['youtube' => '', 'spotify' => ''];
     if (!empty($links['youtube'])) {
         $url = $links['youtube'];
         if (preg_match('/[?&]v=([a-zA-Z0-9_-]+)/', $url, $m) || preg_match('#youtu\.be/([a-zA-Z0-9_-]+)#', $url, $m)) {
             $out['youtube'] = 'https://www.youtube.com/embed/' . $m[1] . '?autoplay=1';
+        } elseif (preg_match('/[?&]list=([a-zA-Z0-9_-]+)/', $url, $m)) {
+            $out['youtube'] = 'https://www.youtube.com/embed/videoseries?list=' . $m[1] . '&autoplay=1';
         }
     }
     if (!empty($links['spotify']) && preg_match('#/(track|album)/([a-zA-Z0-9]+)#', $links['spotify'], $m)) {

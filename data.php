@@ -4,6 +4,7 @@
 // One non-empty link is chosen at random per card when rendering.
 
 // Albums: image, links (spotify, apple, youtube, amazon), title (album name), track_count, year, description, genres
+// Track names: loaded from cache/album-tracks/{spotify_album_id}.json when present (run: php scripts/cache-album-tracks.php)
 $albums = [
     [
         'image'        => 'images/halimaw.jpg',
@@ -49,7 +50,25 @@ $albums = [
     ],
 ];
 
-// Build releases from albums: one entry per track, using album image/links/genres/year
+// Load track names from cache (from Spotify album link). Cache: cache/album-tracks/{spotify_album_id}.json = JSON array of track names.
+$cacheDir = __DIR__ . '/cache/album-tracks';
+function get_album_track_names_from_cache($cacheDir, $spotifyAlbumUrl) {
+    if (!preg_match('#/album/([a-zA-Z0-9]+)#', $spotifyAlbumUrl ?? '', $m)) {
+        return null;
+    }
+    $path = $cacheDir . '/' . $m[1] . '.json';
+    if (!is_file($path)) {
+        return null;
+    }
+    $json = @file_get_contents($path);
+    if ($json === false) {
+        return null;
+    }
+    $names = json_decode($json, true);
+    return is_array($names) ? $names : null;
+}
+
+// Build releases from albums: one entry per track, using album image/links/genres/year. Track title from cache (Spotify) or "Track N".
 $releases = [];
 foreach ($albums as $a) {
     $year = $a['year'] ?? '2025';
@@ -59,11 +78,13 @@ foreach ($albums as $a) {
         'apple'   => $a['links']['apple'] ?? '',
         'spotify' => $a['links']['spotify'] ?? '',
     ];
+    $trackNames = get_album_track_names_from_cache($cacheDir, $a['links']['spotify'] ?? null);
     for ($n = 1; $n <= $a['track_count']; $n++) {
+        $trackName = (isset($trackNames[$n - 1]) && $trackNames[$n - 1] !== '') ? $trackNames[$n - 1] : 'Track ' . $n;
         $releases[] = [
             'image'  => $a['image'],
             'links'  => $releaseLinks,
-            'title'  => 'Track ' . $n,
+            'title'  => $trackName,
             'album'  => $a['title'],
             'year'   => $year,
             'genres' => $a['genres'],
