@@ -244,7 +244,7 @@ return [
         'name'      => 'Joox',
         'url'       => 'https://www.joox.com/artist/1VLESVk10BTN7d1_RLHwQw==',
         'icon'      => 'audio-lines',
-        'icon_slug' => null,
+        'icon_slug' => 'joox',
         'gradient'  => 'from-green-400 to-emerald-600',
         'hover'     => 'green',
     ],
