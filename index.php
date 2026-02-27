@@ -362,8 +362,9 @@ function release_embed_urls(array $links) {
                         $ytListId = $m[1];
                     }
                 ?>
+                <?php $albumVideo = $a['video'] ?? ''; ?>
                 <div class="bg-glitch-surface rounded-xl overflow-hidden border border-white/5 hover:border-glitch-cyan/30 transition-all duration-300 flex flex-col">
-                    <div class="aspect-square overflow-hidden relative flex-shrink-0 group/cover">
+                    <div class="aspect-square overflow-hidden relative flex-shrink-0 group/cover album-cover-media">
                         <?php if ($canPlayAlbum): ?>
                         <button type="button" class="absolute inset-0 w-full h-full flex items-center justify-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-glitch-cyan focus:ring-inset z-0" aria-label="Play album: <?php echo htmlspecialchars($a['title']); ?>"
                             data-album-play-card
@@ -378,7 +379,7 @@ function release_embed_urls(array $links) {
                             data-spotify-link="<?php echo htmlspecialchars($albumLinks['spotify'] ?? ''); ?>"
                             data-amazon-link="<?php echo htmlspecialchars($albumLinks['amazon'] ?? ''); ?>"
                             data-apple-link="<?php echo htmlspecialchars($albumLinks['apple'] ?? ''); ?>">
-                            <img src="<?php echo htmlspecialchars($a['image']); ?>" alt="<?php echo htmlspecialchars($a['title']); ?> - Album Cover" class="w-full h-full object-cover group-hover/cover:scale-105 transition-transform duration-300 pointer-events-none">
+                            <img src="<?php echo htmlspecialchars($a['image']); ?>" alt="<?php echo htmlspecialchars($a['title']); ?> - Album Cover" class="album-cover-poster w-full h-full object-cover group-hover/cover:scale-105 transition-transform duration-300 pointer-events-none">
                             <span class="absolute inset-0 bg-black/40 opacity-0 group-hover/cover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
                                 <span class="w-16 h-16 bg-glitch-cyan rounded-full flex items-center justify-center text-glitch-dark scale-90 group-hover/cover:scale-110 transition-transform">
                                     <i data-lucide="play" class="w-8 h-8 fill-current ml-0.5"></i>
@@ -386,7 +387,12 @@ function release_embed_urls(array $links) {
                             </span>
                         </button>
                         <?php else: ?>
-                        <img src="<?php echo htmlspecialchars($a['image']); ?>" alt="<?php echo htmlspecialchars($a['title']); ?> - Album Cover" class="w-full h-full object-cover">
+                        <img src="<?php echo htmlspecialchars($a['image']); ?>" alt="<?php echo htmlspecialchars($a['title']); ?> - Album Cover" class="album-cover-poster w-full h-full object-cover">
+                        <?php endif; ?>
+                        <?php if ($albumVideo !== ''): ?>
+                        <video class="album-cover-video absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 z-[1]" muted loop playsinline preload="metadata" aria-hidden="true">
+                            <source src="<?php echo htmlspecialchars($albumVideo); ?>" type="video/mp4">
+                        </video>
                         <?php endif; ?>
                         <div class="absolute bottom-0 left-0 right-0 flex justify-center gap-2 p-3 bg-gradient-to-t from-black/80 via-black/50 to-transparent z-10">
                             <?php if ($hasSpotify): ?>
@@ -937,6 +943,34 @@ function release_embed_urls(array $links) {
                 hideVideo();
             });
         }
+
+        // Latest Albums: play video (muted, loop) on hover over cover; show image until video ready, then show video (same as Breaking the Silence / about-hero)
+        document.querySelectorAll('.album-cover-media').forEach(function(media) {
+            var video = media.querySelector('.album-cover-video');
+            if (!video) return;
+            var poster = media.querySelector('.album-cover-poster');
+            var hovering = false;
+            function showVideo() {
+                if (!hovering) return;
+                video.classList.remove('opacity-0');
+                if (poster) poster.classList.add('opacity-0');
+            }
+            function hideVideo() {
+                video.pause();
+                video.classList.add('opacity-0');
+                if (poster) poster.classList.remove('opacity-0');
+            }
+            video.addEventListener('canplay', function() { if (hovering) showVideo(); });
+            media.addEventListener('mouseenter', function() {
+                hovering = true;
+                video.play().catch(function() {});
+                if (video.readyState >= 2) showVideo();
+            });
+            media.addEventListener('mouseleave', function() {
+                hovering = false;
+                hideVideo();
+            });
+        });
 
         // Track card thumbnails: show video when it can play (loop, muted); keep image visible until then
         document.querySelectorAll('.track-card-video').forEach(function(video) {
