@@ -261,6 +261,7 @@ return [
         'url'       => 'https://www.boomplay.com/artists/117137292',
         'icon'      => 'radio',
         'icon_slug' => null,
+        'icon_data' => 'icons/boomplay.png',
         'gradient'  => 'from-amber-500 to-orange-600',
         'hover'     => 'orange',
     ],
