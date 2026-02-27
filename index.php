@@ -289,10 +289,10 @@ function release_embed_urls(array $links) {
                 <button type="button" class="featured-carousel-prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 z-10 w-8 h-8 rounded-full bg-black/30 text-white/70 flex items-center justify-center hover:bg-black/50 hover:text-white border border-white/10 hover:border-white/20 transition-colors focus:outline-none focus:ring-1 focus:ring-white/30" aria-label="Previous tracks">
                     <i data-lucide="chevron-left" class="w-4 h-4"></i>
                 </button>
-                <div class="overflow-hidden px-2 py-5">
-                    <div class="featured-tracks-track flex transition-transform duration-300 ease-out">
+                <div class="overflow-hidden px-2 py-5 w-full min-w-0">
+                    <div class="featured-tracks-track flex transition-transform duration-300 ease-out" style="width: 100%;">
                         <?php foreach ($featuredSlides as $slide): ?>
-                        <div class="featured-tracks-slide flex-shrink-0 grid grid-cols-2 md:grid-cols-4 gap-6 overflow-hidden py-4" style="flex-basis: <?php echo $slidePct; ?>%; width: <?php echo $slidePct; ?>%;">
+                        <div class="featured-tracks-slide flex-shrink-0 grid grid-cols-2 md:grid-cols-4 gap-6 overflow-hidden py-4 px-3" style="flex-basis: <?php echo $slidePct; ?>%; width: <?php echo $slidePct; ?>%; min-width: <?php echo $slidePct; ?>%; max-width: <?php echo $slidePct; ?>%;">
                             <?php foreach ($slide as $r):
                                 $links = $r['links'] ?? [];
                                 $releaseLinks = array_filter($links);
