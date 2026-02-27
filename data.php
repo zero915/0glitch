@@ -255,8 +255,8 @@ return [
         'icon'      => 'music',
         'icon_slug' => null,
         'icon_data' => 'icons/flo-app.png',
-        'gradient'  => 'from-orange-400 to-amber-600',
-        'hover'     => 'orange',
+        'gradient'  => 'from-[#8E44AD] to-[#8E44AD]',
+        'hover'     => 'purple',
     ],
     [
         'name'      => 'Boomplay',
