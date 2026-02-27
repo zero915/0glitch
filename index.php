@@ -49,6 +49,15 @@ if ($carouselScrollSpeed < 1) {
     $carouselScrollSpeed = 15;
 }
 
+// Base URL for SEO (canonical, Open Graph). Prefer .env SITE_URL, else derive from request.
+$siteUrl = getenv('SITE_URL');
+if ($siteUrl === false || $siteUrl === '') {
+    $siteUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http')
+        . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost')
+        . (isset($_SERVER['REQUEST_URI']) ? strtok($_SERVER['REQUEST_URI'], '?') : '/');
+}
+$siteUrl = rtrim($siteUrl, '/');
+
 // Build YouTube and Spotify embed URLs for a release (for in-site player). Prefer YouTube when available.
 function release_embed_urls(array $links) {
     $out = ['youtube' => '', 'spotify' => ''];
@@ -84,7 +93,28 @@ function release_embed_urls(array $links) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zero Glitch | Musician + Song Writer</title>
     <meta name="description" content="Official website of Zero Glitch - Musician and Song Writer. Stream on Spotify, Apple Music, YouTube Music, and more.">
-    
+    <meta name="author" content="Zero Glitch">
+    <meta name="keywords" content="Zero Glitch, musician, songwriter, indie music, Spotify, Apple Music, YouTube Music">
+    <link rel="canonical" href="<?php echo htmlspecialchars($siteUrl . '/'); ?>">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<?php echo htmlspecialchars($siteUrl . '/'); ?>">
+    <meta property="og:title" content="Zero Glitch | Musician + Song Writer">
+    <meta property="og:description" content="Official website of Zero Glitch - Musician and Song Writer. Stream on Spotify, Apple Music, YouTube Music, and more.">
+    <meta property="og:image" content="<?php echo htmlspecialchars($siteUrl . '/images/zero-glitch.jpg'); ?>">
+    <meta property="og:site_name" content="Zero Glitch">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Zero Glitch | Musician + Song Writer">
+    <meta name="twitter:description" content="Official website of Zero Glitch - Musician and Song Writer. Stream on Spotify, Apple Music, YouTube Music, and more.">
+    <meta name="twitter:image" content="<?php echo htmlspecialchars($siteUrl . '/images/zero-glitch.jpg'); ?>">
+
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="robots" content="index, follow">
+
     <!-- Favicon (0G logo, white on transparent) -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -121,9 +151,22 @@ function release_embed_urls(array $links) {
                         }
                     }
                 }
-            }
         }
-    </script>
+    }
+</script>
+    <?php
+    $sameAs = array_column($platforms, 'url');
+    $jsonLd = [
+        '@context' => 'https://schema.org',
+        '@type' => 'MusicGroup',
+        'name' => 'Zero Glitch',
+        'description' => 'Official website of Zero Glitch - Musician and Song Writer. Stream on Spotify, Apple Music, YouTube Music, and more.',
+        'url' => $siteUrl . '/',
+        'image' => $siteUrl . '/images/zero-glitch.jpg',
+        'sameAs' => array_values($sameAs),
+    ];
+    ?>
+    <script type="application/ld+json"><?php echo json_encode($jsonLd, JSON_UNESCAPED_SLASHES); ?></script>
 </head>
 <body class="bg-glitch-dark text-white font-sans overflow-x-hidden">
     
