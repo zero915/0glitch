@@ -95,7 +95,7 @@ $albums = [
             ['name' => 'Sumpa (Mangkukulam or ᜋᜅ᜔ᜃᜓᜃᜓᜎᜋ᜔)',   'spotify' => 'https://open.spotify.com/track/1ymio20n3S6aebVNt4heb6', 'youtube' => '', 'image' => 'images/sumpa.jpg', 'video' => 'videos/sumpa.mp4'],
             ['name' => 'Puti (Kaperosa or ᜃᜉᜒᜇᜓᜐ)', 'spotify' => 'https://open.spotify.com/track/7C5vYnP8IRCvljZHDNcW1S', 'youtube' => '', 'image' => 'images/puti.jpg', 'video' => 'videos/puti.mp4'],
             ['name' => 'Hikbi (Tiyanak or ᜆᜒᜌᜈᜃ᜔)', 'spotify' => 'https://open.spotify.com/track/3FzU41JoSrHhXx6fVK0hjx', 'youtube' => '', 'image' => 'images/hikbi.jpg', 'video' => 'videos/hikbi.mp4'],
-            ['name' => 'Bantay (Sigbin)', 'spotify' => 'https://open.spotify.com/track/0LInuzUvAR3kBWe9lP0MNn', 'youtube' => '', 'image' => 'images/bantay.jpg', 'video' => 'videos/bantay.mp4'],
+            ['name' => 'Bantay (Sigbin or ᜐᜒᜄ᜔ᜊᜒᜈ᜔)', 'spotify' => 'https://open.spotify.com/track/0LInuzUvAR3kBWe9lP0MNn', 'youtube' => '', 'image' => 'images/bantay.jpg', 'video' => 'videos/bantay.mp4'],
             ['name' => 'Haplos (Diwata or ᜇᜒᜏᜆ)', 'spotify' => 'https://open.spotify.com/track/727yNwaHS7a4J8DbQKwvSz', 'youtube' => '', 'image' => 'images/haplos.jpg', 'video' => 'videos/haplos.mp4'],
             ['name' => 'Lingon (Aswang or ᜀᜐ᜔ᜏᜅ᜔)', 'spotify' => 'https://open.spotify.com/track/26mvK2ix2XHPHQh5Dx7DVQ', 'youtube' => '', 'image' => 'images/lingon.jpg', 'video' => 'videos/lingon.mp4'],
             ['name' => 'Itim (Búsaw or ᜊᜓᜐᜏ᜔)', 'spotify' => 'https://open.spotify.com/track/4P74ZcNHdSG907B65k2FFj', 'youtube' => '', 'image' => 'images/itim.jpg', 'video' => 'videos/itim.mp4'],
