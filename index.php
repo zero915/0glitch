@@ -357,19 +357,19 @@ function release_embed_urls(array $links) {
                                  data-amazon-link="<?php echo htmlspecialchars($links['amazon'] ?? ''); ?>"
                                  data-apple-link="<?php echo htmlspecialchars($links['apple'] ?? ''); ?>"
                                  data-external-link="<?php echo htmlspecialchars($externalLink); ?>">
-                                <div class="w-full overflow-hidden rounded-t-xl" style="aspect-ratio: 1/1.1; padding: 5% 0;">
+                                <div class="w-full overflow-hidden rounded-t-xl relative" style="aspect-ratio: 1/1.1; padding: 5% 0;">
                                     <div class="aspect-square relative w-full h-full">
                                         <img src="<?php echo htmlspecialchars($trackImage); ?>" alt="<?php echo htmlspecialchars($r['title']); ?> - Cover" class="track-card-poster w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                                     <?php if ($trackVideo !== ''): ?>
-                                    <video class="track-card-video absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300" muted loop playsinline autoplay preload="metadata" aria-hidden="true">
+                                    <video class="track-card-video absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 group-hover:scale-110 transition-transform duration-500" muted loop playsinline autoplay preload="metadata" aria-hidden="true">
                                         <source src="<?php echo htmlspecialchars($trackVideo); ?>" type="video/mp4">
                                     </video>
                                     <?php endif; ?>
-                                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                        <span class="w-16 h-16 bg-glitch-cyan rounded-full flex items-center justify-center text-glitch-dark group-hover:scale-110 transition-transform">
+                                    </div>
+                                    <div class="absolute inset-0 z-10 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+                                        <span class="w-16 h-16 bg-glitch-cyan rounded-full flex items-center justify-center text-glitch-dark group-hover:scale-110 transition-transform pointer-events-auto">
                                             <i data-lucide="play" class="w-8 h-8 fill-current"></i>
                                         </span>
-                                    </div>
                                     </div>
                                 </div>
                                 <div class="p-4">
