@@ -362,7 +362,7 @@ function release_embed_urls(array $links) {
                         <?php if (!empty($p['icon_data'])): ?>
                         <img src="<?php echo htmlspecialchars($p['icon_data']); ?>" alt="<?php echo htmlspecialchars($p['name']); ?> icon" class="w-8 h-8 object-contain" width="32" height="32">
                         <?php elseif (!empty($p['icon_slug'])): ?>
-                        <img src="icons/<?php echo htmlspecialchars($p['icon_slug']); ?>.svg" alt="<?php echo htmlspecialchars($p['name']); ?> icon" class="w-8 h-8" width="32" height="32">
+                        <img src="icons/<?php echo htmlspecialchars($p['icon_slug']); ?>.svg" alt="<?php echo htmlspecialchars($p['name']); ?> icon" class="w-8 h-8 object-contain" width="32" height="32">
                         <?php else: ?>
                         <i data-lucide="<?php echo htmlspecialchars($p['icon']); ?>" class="w-8 h-8"></i>
                         <?php endif; ?>
