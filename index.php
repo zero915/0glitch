@@ -986,12 +986,14 @@ function release_embed_urls(array $links) {
             else if (modal.classList.contains('flex')) closeModal();
         });
 
-        // About "Breaking the Silence": play video (muted, loop) on hover over image; show image until video ready, then show video
+        // About "Breaking the Silence": play video (muted, loop) on hover over image; on touch, long-press (500ms) starts video like hover
         var aboutMedia = document.querySelector('.about-hero-media');
         if (aboutMedia) {
             var aboutVideo = aboutMedia.querySelector('.about-hero-video');
             var aboutPoster = aboutMedia.querySelector('.about-hero-poster');
             var aboutHovering = false;
+            var aboutLongPressTimer = null;
+            var aboutLongPressTriggered = false;
             function showVideo() {
                 if (!aboutHovering) return;
                 aboutVideo.classList.remove('opacity-0');
@@ -1001,6 +1003,11 @@ function release_embed_urls(array $links) {
                 aboutVideo.pause();
                 aboutVideo.classList.add('opacity-0');
                 if (aboutPoster) aboutPoster.classList.remove('opacity-0');
+            }
+            function startVideoLikeHover() {
+                aboutHovering = true;
+                aboutVideo.play().catch(function() {});
+                if (aboutVideo.readyState >= 2) showVideo();
             }
             aboutVideo.addEventListener('canplay', showVideo, { once: false });
             aboutMedia.addEventListener('mouseenter', function() {
@@ -1012,6 +1019,35 @@ function release_embed_urls(array $links) {
                 aboutHovering = false;
                 hideVideo();
             });
+            aboutMedia.addEventListener('touchstart', function() {
+                aboutLongPressTriggered = false;
+                aboutLongPressTimer = setTimeout(function() {
+                    aboutLongPressTimer = null;
+                    aboutLongPressTriggered = true;
+                    startVideoLikeHover();
+                }, 500);
+            }, { passive: true });
+            aboutMedia.addEventListener('touchmove', function() {
+                if (aboutLongPressTimer) { clearTimeout(aboutLongPressTimer); aboutLongPressTimer = null; }
+            }, { passive: true });
+            aboutMedia.addEventListener('touchend', function() {
+                if (aboutLongPressTimer) clearTimeout(aboutLongPressTimer);
+                aboutLongPressTimer = null;
+                if (aboutLongPressTriggered) {
+                    aboutHovering = false;
+                    hideVideo();
+                    aboutLongPressTriggered = false;
+                }
+            }, { passive: true });
+            aboutMedia.addEventListener('touchcancel', function() {
+                if (aboutLongPressTimer) clearTimeout(aboutLongPressTimer);
+                aboutLongPressTimer = null;
+                if (aboutLongPressTriggered) {
+                    aboutHovering = false;
+                    hideVideo();
+                    aboutLongPressTriggered = false;
+                }
+            }, { passive: true });
         }
 
         // Featured Tracks carousel: left/right arrows, auto-advance after N seconds of inactivity (from .env CAROUSEL_SCROLL_SPEED)
