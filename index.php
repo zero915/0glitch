@@ -4,6 +4,21 @@
 //header('Location: https://open.spotify.com/artist/6QxFhVRljm0SiM6ubZSYzz');
 //header('Location: https://music.apple.com/us/artist/zero-glitch/1842895473');
 
+$root = __DIR__;
+if (is_file($root . '/.env')) {
+    foreach (file($root . '/.env', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+        if (strpos($line, '=') !== false && strpos(trim($line), '#') !== 0) {
+            [$key, $val] = explode('=', $line, 2);
+            $key = trim($key);
+            $val = trim($val, " \t\"'");
+            if (!array_key_exists($key, $_ENV)) {
+                putenv("$key=$val");
+                $_ENV[$key] = $val;
+            }
+        }
+    }
+}
+
 $data = require __DIR__ . '/data.php';
 $releases = $data['releases'];
 $albums = $data['albums'];
@@ -246,12 +261,11 @@ function release_embed_urls(array $links) {
             
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="featured-tracks">
                 <?php
-                // Show Merry Christmas Sa'yo tracks in Featured Tracks only between Sept 9 and Jan 18
-                $month = (int) date('n');
-                $day = (int) date('j');
-                $inChristmasWindow = ($month === 9 && $day >= 9) || in_array($month, [10, 11, 12], true) || ($month === 1 && $day <= 18);
+                // Hide "Merry Christmas Sa'yo" in Featured Tracks unless HIDE_MERRY_CHRISTMAS_SAYO=0 (default: hide)
+                $hideChristmasEnv = getenv('HIDE_MERRY_CHRISTMAS_SAYO');
+                $hideMerryChristmas = ($hideChristmasEnv === false || $hideChristmasEnv === '') ? true : filter_var($hideChristmasEnv, FILTER_VALIDATE_BOOLEAN);
                 $releasesShown = $releases;
-                if (!$inChristmasWindow) {
+                if ($hideMerryChristmas) {
                     $releasesShown = array_values(array_filter($releasesShown, function ($r) {
                         return ($r['album'] ?? '') !== "Merry Christmas Sa'yo";
                     }));
