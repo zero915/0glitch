@@ -9,6 +9,7 @@
 $albums = [
     [
         'image'        => 'images/system-upgrade.jpg',
+        'video'        => 'videos/system-upgrade-album.mp4',
         'links'        => [
             'spotify' => 'https://open.spotify.com/album/3lMnDfREaxXTp72psKWbVS',
             'apple'   => 'https://music.apple.com/us/album/system-upgrade/1859919323',
@@ -43,6 +44,7 @@ $albums = [
     ],
     [
         'image'        => 'images/merry-christmas-sayo.jpg',
+        'video'        => 'videos/merry-christmas-sayo.mp4',
         'links'        => [
             'spotify' => 'https://open.spotify.com/album/3HTKXuQ8iYcrCeER3MwR8n',
             'apple'   => 'https://music.apple.com/us/album/merry-christmas-sayo/1851819376',
@@ -70,6 +72,7 @@ $albums = [
     ],
     [
         'image'        => 'images/halimaw.jpg',
+        'video'        => 'videos/halimaw.mp4',
         'links'        => [
             'spotify' => 'https://open.spotify.com/album/0pwVXM5wXNwjH5lbBNhiv3',
             'apple'   => 'https://music.apple.com/us/album/halimaw/1873033857',

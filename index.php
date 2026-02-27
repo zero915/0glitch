@@ -306,11 +306,33 @@ function release_embed_urls(array $links) {
                     $hasAmazon = !empty($albumLinks['amazon']);
                     $hasIheart = !empty($albumLinks['iheart']);
                     $hasTidal = !empty($albumLinks['tidal']);
+                    $albumEmbeds = release_embed_urls($albumLinks);
+                    $canPlayAlbum = $albumEmbeds['youtube'] !== '' || $albumEmbeds['spotify'] !== '';
                 ?>
                 <div class="bg-glitch-surface rounded-xl overflow-hidden border border-white/5 hover:border-glitch-cyan/30 transition-all duration-300 flex flex-col">
                     <div class="aspect-square overflow-hidden relative flex-shrink-0 group/cover">
+                        <?php if ($canPlayAlbum): ?>
+                        <button type="button" class="absolute inset-0 w-full h-full flex items-center justify-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-glitch-cyan focus:ring-inset z-0" aria-label="Play album: <?php echo htmlspecialchars($a['title']); ?>"
+                            data-album-play-card
+                            data-title="<?php echo htmlspecialchars($a['title']); ?>"
+                            data-album="<?php echo htmlspecialchars($a['title']); ?> • <?php echo (int) ($a['track_count'] ?? 0); ?> tracks"
+                            data-youtube-embed="<?php echo htmlspecialchars($albumEmbeds['youtube']); ?>"
+                            data-spotify-embed="<?php echo htmlspecialchars($albumEmbeds['spotify']); ?>"
+                            data-youtube-link="<?php echo htmlspecialchars($albumLinks['youtube'] ?? ''); ?>"
+                            data-spotify-link="<?php echo htmlspecialchars($albumLinks['spotify'] ?? ''); ?>"
+                            data-amazon-link="<?php echo htmlspecialchars($albumLinks['amazon'] ?? ''); ?>"
+                            data-apple-link="<?php echo htmlspecialchars($albumLinks['apple'] ?? ''); ?>">
+                            <img src="<?php echo htmlspecialchars($a['image']); ?>" alt="<?php echo htmlspecialchars($a['title']); ?> - Album Cover" class="w-full h-full object-cover group-hover/cover:scale-105 transition-transform duration-300 pointer-events-none">
+                            <span class="absolute inset-0 bg-black/40 opacity-0 group-hover/cover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+                                <span class="w-16 h-16 bg-glitch-cyan rounded-full flex items-center justify-center text-glitch-dark scale-90 group-hover/cover:scale-110 transition-transform">
+                                    <i data-lucide="play" class="w-8 h-8 fill-current ml-0.5"></i>
+                                </span>
+                            </span>
+                        </button>
+                        <?php else: ?>
                         <img src="<?php echo htmlspecialchars($a['image']); ?>" alt="<?php echo htmlspecialchars($a['title']); ?> - Album Cover" class="w-full h-full object-cover">
-                        <div class="absolute bottom-0 left-0 right-0 flex justify-center gap-2 p-3 bg-gradient-to-t from-black/80 via-black/50 to-transparent">
+                        <?php endif; ?>
+                        <div class="absolute bottom-0 left-0 right-0 flex justify-center gap-2 p-3 bg-gradient-to-t from-black/80 via-black/50 to-transparent z-10">
                             <?php if ($hasSpotify): ?>
                             <a href="<?php echo htmlspecialchars($albumLinks['spotify']); ?>" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-full border-2 border-white/50 bg-white/5 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 hover:border-white/80 hover:scale-110 transition-all duration-200" title="Listen on Spotify"><img src="icons/spotify.svg" alt="Spotify" class="w-4 h-4" width="16" height="16"></a>
                             <?php endif; ?>
@@ -570,6 +592,19 @@ function release_embed_urls(array $links) {
             });
             card.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.click(); }
+            });
+        });
+
+        // Latest Albums: click image to play album playlist (YouTube if available, else Spotify)
+        document.querySelectorAll('[data-album-play-card]').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                var ytEmbed = btn.getAttribute('data-youtube-embed');
+                var spEmbed = btn.getAttribute('data-spotify-embed');
+                if (ytEmbed || spEmbed) {
+                    modal._trackCard = btn;
+                    openModal(btn);
+                }
             });
         });
 
