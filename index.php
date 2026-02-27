@@ -380,11 +380,13 @@ function release_embed_urls(array $links) {
                             data-amazon-link="<?php echo htmlspecialchars($albumLinks['amazon'] ?? ''); ?>"
                             data-apple-link="<?php echo htmlspecialchars($albumLinks['apple'] ?? ''); ?>">
                             <img src="<?php echo htmlspecialchars($a['image']); ?>" alt="<?php echo htmlspecialchars($a['title']); ?> - Album Cover" class="album-cover-poster w-full h-full object-cover group-hover/cover:scale-105 transition-transform duration-300 pointer-events-none">
+                            <?php if ($albumVideo === ''): ?>
                             <span class="absolute inset-0 bg-black/40 opacity-0 group-hover/cover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
                                 <span class="w-16 h-16 bg-glitch-cyan rounded-full flex items-center justify-center text-glitch-dark scale-90 group-hover/cover:scale-110 transition-transform">
                                     <i data-lucide="play" class="w-8 h-8 fill-current ml-0.5"></i>
                                 </span>
                             </span>
+                            <?php endif; ?>
                         </button>
                         <?php else: ?>
                         <img src="<?php echo htmlspecialchars($a['image']); ?>" alt="<?php echo htmlspecialchars($a['title']); ?> - Album Cover" class="album-cover-poster w-full h-full object-cover">
