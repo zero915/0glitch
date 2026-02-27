@@ -308,6 +308,9 @@ function release_embed_urls(array $links) {
                     $hasTidal = !empty($albumLinks['tidal']);
                     $albumEmbeds = release_embed_urls($albumLinks);
                     $canPlayAlbum = $albumEmbeds['youtube'] !== '' || $albumEmbeds['spotify'] !== '';
+                    $albumTrackNames = array_map(function ($t) {
+                        return is_array($t) ? (isset($t['name']) ? $t['name'] : '') : (string) $t;
+                    }, $a['tracks'] ?? []);
                 ?>
                 <div class="bg-glitch-surface rounded-xl overflow-hidden border border-white/5 hover:border-glitch-cyan/30 transition-all duration-300 flex flex-col">
                     <div class="aspect-square overflow-hidden relative flex-shrink-0 group/cover">
@@ -316,6 +319,7 @@ function release_embed_urls(array $links) {
                             data-album-play-card
                             data-title="<?php echo htmlspecialchars($a['title']); ?>"
                             data-album="<?php echo htmlspecialchars($a['title']); ?> • <?php echo (int) ($a['track_count'] ?? 0); ?> tracks"
+                            data-tracks="<?php echo htmlspecialchars(json_encode($albumTrackNames), ENT_QUOTES, 'UTF-8'); ?>"
                             data-youtube-embed="<?php echo htmlspecialchars($albumEmbeds['youtube']); ?>"
                             data-spotify-embed="<?php echo htmlspecialchars($albumEmbeds['spotify']); ?>"
                             data-youtube-link="<?php echo htmlspecialchars($albumLinks['youtube'] ?? ''); ?>"
@@ -475,7 +479,7 @@ function release_embed_urls(array $links) {
         </div>
     </footer>
 
-    <!-- Track player modal (YouTube / Spotify embed) -->
+    <!-- Track player modal (YouTube / Spotify embed) - single track from Featured Tracks -->
     <div id="track-player-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm" aria-modal="true" aria-labelledby="track-player-title">
         <div class="relative w-full max-w-lg bg-glitch-surface rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
             <button type="button" id="track-player-close" class="absolute top-3 right-3 z-10 w-10 h-10 rounded-full bg-black/50 border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-colors" aria-label="Close">
@@ -494,6 +498,40 @@ function release_embed_urls(array $links) {
             </div>
             <div class="p-3 text-center text-xs text-gray-400">
                 <span id="track-player-links-wrap" class="hidden">Open in <a id="track-player-link-yt" href="#" target="_blank" rel="noopener noreferrer" class="hover:text-glitch-cyan transition-colors hidden">YouTube Music</a><span id="track-player-sep1" class="text-gray-500 mx-1 hidden">•</span><a id="track-player-link-sp" href="#" target="_blank" rel="noopener noreferrer" class="hover:text-glitch-cyan transition-colors hidden">Spotify</a><span id="track-player-sep2" class="text-gray-500 mx-1 hidden">•</span><a id="track-player-link-am" href="#" target="_blank" rel="noopener noreferrer" class="hover:text-glitch-cyan transition-colors hidden">Amazon Music</a><span id="track-player-sep3" class="text-gray-500 mx-1 hidden">•</span><a id="track-player-link-apple" href="#" target="_blank" rel="noopener noreferrer" class="hover:text-glitch-cyan transition-colors hidden">Apple Music</a></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Album playlist modal (Latest Albums) - embed + track list -->
+    <div id="album-playlist-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm" aria-modal="true" aria-labelledby="album-playlist-title">
+        <div class="relative w-full max-w-4xl max-h-[90vh] bg-glitch-surface rounded-2xl border border-white/10 shadow-2xl overflow-hidden flex flex-col">
+            <button type="button" id="album-playlist-close" class="absolute top-3 right-3 z-10 w-10 h-10 rounded-full bg-black/50 border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-colors" aria-label="Close">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div class="p-4 pb-2 pr-14">
+                <h2 id="album-playlist-title" class="font-display text-xl font-bold text-white"></h2>
+                <p id="album-playlist-subtitle" class="text-gray-400 text-sm"></p>
+            </div>
+            <div class="flex border-b border-white/10" id="album-playlist-tabs">
+                <button type="button" data-album-tab="youtube" class="flex-1 py-3 text-sm font-medium text-gray-400 hover:text-white border-b-2 border-transparent data-[active]:text-glitch-cyan data-[active]:border-glitch-cyan transition-colors hidden">YouTube</button>
+                <button type="button" data-album-tab="spotify" class="flex-1 py-3 text-sm font-medium text-gray-400 hover:text-white border-b-2 border-transparent data-[active]:text-glitch-cyan data-[active]:border-glitch-cyan transition-colors hidden">Spotify</button>
+            </div>
+            <div class="flex flex-col md:flex-row flex-1 min-h-0">
+                <div class="flex-1 min-w-0 bg-black flex items-center justify-center">
+                    <iframe id="album-playlist-iframe" class="w-full aspect-video md:aspect-auto md:h-full md:min-h-[320px]" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="Album playlist"></iframe>
+                </div>
+                <div class="w-full md:w-72 flex-shrink-0 border-t md:border-t-0 md:border-l border-white/10 flex flex-col bg-glitch-dark/50">
+                    <div class="px-3 py-2 border-b border-white/10 flex items-center gap-2">
+                        <i data-lucide="list" class="w-4 h-4 text-glitch-cyan flex-shrink-0"></i>
+                        <span class="text-xs font-semibold text-gray-300 uppercase tracking-wider">Track list</span>
+                    </div>
+                    <ul id="album-playlist-tracks" class="flex-1 overflow-y-auto py-2 text-sm text-gray-300 list-none divide-y divide-white/5">
+                        <!-- filled by JS -->
+                    </ul>
+                </div>
+            </div>
+            <div class="p-3 text-center text-xs text-gray-400 border-t border-white/10">
+                <span id="album-playlist-links-wrap" class="hidden">Open in <a id="album-playlist-link-yt" href="#" target="_blank" rel="noopener noreferrer" class="hover:text-glitch-cyan transition-colors hidden">YouTube Music</a><span id="album-playlist-sep1" class="text-gray-500 mx-1 hidden">•</span><a id="album-playlist-link-sp" href="#" target="_blank" rel="noopener noreferrer" class="hover:text-glitch-cyan transition-colors hidden">Spotify</a><span id="album-playlist-sep2" class="text-gray-500 mx-1 hidden">•</span><a id="album-playlist-link-am" href="#" target="_blank" rel="noopener noreferrer" class="hover:text-glitch-cyan transition-colors hidden">Amazon Music</a><span id="album-playlist-sep3" class="text-gray-500 mx-1 hidden">•</span><a id="album-playlist-link-apple" href="#" target="_blank" rel="noopener noreferrer" class="hover:text-glitch-cyan transition-colors hidden">Apple Music</a></span>
             </div>
         </div>
     </div>
@@ -595,15 +633,113 @@ function release_embed_urls(array $links) {
             });
         });
 
-        // Latest Albums: click image to play album playlist (YouTube if available, else Spotify)
+        // Latest Albums: open album-playlist modal (embed + track list)
+        var albumModal = document.getElementById('album-playlist-modal');
+        var albumIframe = document.getElementById('album-playlist-iframe');
+        var albumCloseBtn = document.getElementById('album-playlist-close');
+        var albumTitleEl = document.getElementById('album-playlist-title');
+        var albumSubtitleEl = document.getElementById('album-playlist-subtitle');
+        var albumTracksList = document.getElementById('album-playlist-tracks');
+        var albumTabYt = document.querySelector('[data-album-tab="youtube"]');
+        var albumTabSp = document.querySelector('[data-album-tab="spotify"]');
+        var albumTabsWrap = document.getElementById('album-playlist-tabs');
+
+        function openAlbumModal(btn) {
+            var ytEmbed = btn.getAttribute('data-youtube-embed') || '';
+            var spEmbed = btn.getAttribute('data-spotify-embed') || '';
+            if (!ytEmbed && !spEmbed) return;
+            albumModal._albumCard = btn;
+            albumTitleEl.textContent = btn.getAttribute('data-title') || '';
+            albumSubtitleEl.textContent = btn.getAttribute('data-album') || '';
+            var tracksJson = btn.getAttribute('data-tracks');
+            var tracks = [];
+            try {
+                if (tracksJson) tracks = JSON.parse(tracksJson);
+            } catch (e) {}
+            albumTracksList.innerHTML = '';
+            tracks.forEach(function(name, i) {
+                if (!name) return;
+                var li = document.createElement('li');
+                li.className = 'px-3 py-2 flex items-center gap-2';
+                var num = document.createElement('span');
+                num.className = 'text-gray-500 tabular-nums w-6 flex-shrink-0';
+                num.textContent = (i + 1) + '.';
+                var title = document.createElement('span');
+                title.className = 'truncate';
+                title.textContent = name;
+                li.appendChild(num);
+                li.appendChild(title);
+                albumTracksList.appendChild(li);
+            });
+            var hasYt = !!ytEmbed;
+            var hasSp = !!spEmbed;
+            document.getElementById('album-playlist-link-yt').href = btn.getAttribute('data-youtube-link') || '#';
+            document.getElementById('album-playlist-link-sp').href = btn.getAttribute('data-spotify-link') || '#';
+            document.getElementById('album-playlist-link-am').href = btn.getAttribute('data-amazon-link') || '#';
+            document.getElementById('album-playlist-link-apple').href = btn.getAttribute('data-apple-link') || '#';
+            document.getElementById('album-playlist-link-yt').classList.toggle('hidden', !btn.getAttribute('data-youtube-link'));
+            document.getElementById('album-playlist-link-sp').classList.toggle('hidden', !btn.getAttribute('data-spotify-link'));
+            document.getElementById('album-playlist-link-am').classList.toggle('hidden', !btn.getAttribute('data-amazon-link'));
+            document.getElementById('album-playlist-link-apple').classList.toggle('hidden', !btn.getAttribute('data-apple-link'));
+            document.getElementById('album-playlist-sep1').classList.toggle('hidden', !(hasYt && hasSp));
+            document.getElementById('album-playlist-sep2').classList.toggle('hidden', !(hasSp && btn.getAttribute('data-amazon-link')));
+            document.getElementById('album-playlist-sep3').classList.toggle('hidden', !(btn.getAttribute('data-amazon-link') && btn.getAttribute('data-apple-link')));
+            document.getElementById('album-playlist-links-wrap').classList.toggle('hidden', !(hasYt || hasSp || btn.getAttribute('data-amazon-link') || btn.getAttribute('data-apple-link')));
+            albumTabYt.classList.toggle('hidden', !ytEmbed);
+            albumTabSp.classList.toggle('hidden', !spEmbed);
+            albumTabsWrap.classList.toggle('hidden', !ytEmbed && !spEmbed);
+            if (ytEmbed) {
+                albumIframe.src = ytEmbed;
+                albumTabYt.setAttribute('data-active', '');
+                albumTabSp.removeAttribute('data-active');
+            } else {
+                albumIframe.src = spEmbed;
+                albumTabSp.setAttribute('data-active', '');
+                albumTabYt.removeAttribute('data-active');
+            }
+            albumModal.classList.remove('hidden');
+            albumModal.classList.add('flex');
+            if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+        }
+
+        function closeAlbumModal() {
+            albumModal.classList.add('hidden');
+            albumModal.classList.remove('flex');
+            albumIframe.src = 'about:blank';
+        }
+
         document.querySelectorAll('[data-album-play-card]').forEach(function(btn) {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
                 var ytEmbed = btn.getAttribute('data-youtube-embed');
                 var spEmbed = btn.getAttribute('data-spotify-embed');
-                if (ytEmbed || spEmbed) {
-                    modal._trackCard = btn;
-                    openModal(btn);
+                if (ytEmbed || spEmbed) openAlbumModal(btn);
+            });
+        });
+
+        albumCloseBtn.addEventListener('click', closeAlbumModal);
+        albumModal.addEventListener('click', function(e) {
+            if (e.target === albumModal) closeAlbumModal();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && albumModal.classList.contains('flex')) closeAlbumModal();
+        });
+
+        document.querySelectorAll('[data-album-tab]').forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                var card = albumModal._albumCard;
+                if (!card) return;
+                var yt = card.getAttribute('data-youtube-embed');
+                var sp = card.getAttribute('data-spotify-embed');
+                var name = this.getAttribute('data-album-tab');
+                if (name === 'youtube' && yt) {
+                    albumIframe.src = yt;
+                    document.querySelectorAll('[data-album-tab]').forEach(function(t) { t.removeAttribute('data-active'); });
+                    this.setAttribute('data-active', '');
+                } else if (name === 'spotify' && sp) {
+                    albumIframe.src = sp;
+                    document.querySelectorAll('[data-album-tab]').forEach(function(t) { t.removeAttribute('data-active'); });
+                    this.setAttribute('data-active', '');
                 }
             });
         });
@@ -613,7 +749,9 @@ function release_embed_urls(array $links) {
             if (e.target === modal) closeModal();
         });
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && modal.classList.contains('flex')) closeModal();
+            if (e.key !== 'Escape') return;
+            if (albumModal.classList.contains('flex')) closeAlbumModal();
+            else if (modal.classList.contains('flex')) closeModal();
         });
 
         // About "Breaking the Silence": play video (muted, loop) on hover over image; show image until video ready, then show video
