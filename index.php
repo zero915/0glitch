@@ -334,7 +334,7 @@ function release_embed_urls(array $links) {
                 <button type="button" class="featured-carousel-prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 z-10 w-8 h-8 rounded-full bg-black/30 text-white/70 flex items-center justify-center hover:bg-black/50 hover:text-white border border-white/10 hover:border-white/20 transition-colors focus:outline-none focus:ring-1 focus:ring-white/30" aria-label="Previous tracks">
                     <i data-lucide="chevron-left" class="w-4 h-4"></i>
                 </button>
-                <div class="overflow-hidden px-2 py-5 w-full min-w-0">
+                <div class="featured-tracks-viewport overflow-hidden px-2 py-5 w-full min-w-0 cursor-grab active:cursor-grabbing touch-pan-y">
                     <div class="featured-tracks-track flex transition-transform duration-300 ease-out" style="width: <?php echo $trackWidthPct; ?>%;">
                         <?php foreach ($featuredSlides as $slide): ?>
                         <div class="featured-tracks-slide flex-shrink-0 grid grid-cols-2 md:grid-cols-4 gap-6 overflow-hidden py-4 px-3" style="flex-basis: <?php echo $slidePct; ?>%; width: <?php echo $slidePct; ?>%; min-width: <?php echo $slidePct; ?>%; max-width: <?php echo $slidePct; ?>%;">
@@ -1037,6 +1037,66 @@ function release_embed_urls(array $links) {
             function resetAutoTimer() {
                 if (autoTimer) clearInterval(autoTimer);
                 if (totalSlides >= 2) autoTimer = setInterval(function() { goToSlide(currentIndex + 1); }, speedSec * 1000);
+            }
+
+            var viewport = featuredCarousel.querySelector('.featured-tracks-viewport');
+            var dragStartX = null;
+            var dragMoved = false;
+            var dragHandled = false;
+            var touchStartX = 0;
+            var touchStartY = 0;
+
+            function handleDragEnd(deltaX) {
+                var minSwipe = 50;
+                if (deltaX > minSwipe) goToSlide(currentIndex - 1);
+                else if (deltaX < -minSwipe) goToSlide(currentIndex + 1);
+            }
+
+            if (viewport) {
+                viewport.addEventListener('mousedown', function(e) {
+                    dragStartX = e.clientX;
+                    dragMoved = false;
+                    dragHandled = false;
+                });
+                viewport.addEventListener('mousemove', function(e) {
+                    if (dragStartX === null) return;
+                    if (Math.abs(e.clientX - dragStartX) > 10) dragMoved = true;
+                });
+                viewport.addEventListener('mouseup', function(e) {
+                    if (dragStartX === null) return;
+                    var deltaX = e.clientX - dragStartX;
+                    if (dragMoved && Math.abs(deltaX) > 50) {
+                        handleDragEnd(deltaX);
+                        dragHandled = true;
+                    }
+                    dragStartX = null;
+                });
+                viewport.addEventListener('mouseleave', function() {
+                    dragStartX = null;
+                });
+                viewport.addEventListener('click', function(e) {
+                    if (dragHandled) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dragHandled = false;
+                    }
+                }, true);
+                viewport.addEventListener('touchstart', function(e) {
+                    touchStartX = e.touches[0].clientX;
+                    touchStartY = e.touches[0].clientY;
+                }, { passive: true });
+                viewport.addEventListener('touchmove', function(e) {
+                    var dx = e.touches[0].clientX - touchStartX;
+                    var dy = e.touches[0].clientY - touchStartY;
+                    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 15) e.preventDefault();
+                }, { passive: false });
+                viewport.addEventListener('touchend', function(e) {
+                    if (e.changedTouches.length) {
+                        var deltaX = e.changedTouches[0].clientX - touchStartX;
+                        handleDragEnd(deltaX);
+                        resetAutoTimer();
+                    }
+                }, { passive: true });
             }
 
             if (totalSlides >= 2) {
