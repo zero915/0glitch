@@ -373,7 +373,7 @@ function release_embed_urls(array $links) {
             </div>
             
             <div class="mt-12 text-center">
-                <p class="text-gray-500 text-sm">Also available on Flo, Saavn, SoundCloud, and 25+ streaming platforms worldwide</p>
+                <p class="text-gray-500 text-sm">Also available on NetEase, Saavn, Qobuz, Tiktok, Instagram and 25+ social media and streaming platforms worldwide</p>
             </div>
         </div>
     </section>
