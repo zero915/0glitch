@@ -102,9 +102,9 @@ function release_embed_urls(array $links) {
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex-shrink-0 flex items-center">
-                    <span class="font-display font-bold text-2xl tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-glitch-cyan to-glitch-magenta">
+                    <a href="/" class="font-display font-bold text-2xl tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-glitch-cyan to-glitch-magenta hover:opacity-90 transition-opacity">
                         ZERO GLITCH
-                    </span>
+                    </a>
                 </div>
                 
                 <div class="hidden md:flex space-x-8">
