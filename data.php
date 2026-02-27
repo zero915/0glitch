@@ -246,7 +246,7 @@ return [
         'icon'      => 'audio-lines',
         'icon_slug' => null,
         'icon_data' => 'icons/joox.png',
-        'gradient'  => 'from-green-400 to-emerald-600',
+        'gradient'  => 'from-[#00aa55] to-[#00aa55]',
         'hover'     => 'green',
     ],
     [
@@ -255,7 +255,7 @@ return [
         'icon'      => 'music',
         'icon_slug' => null,
         'icon_data' => 'icons/flo-app.png',
-        'gradient'  => 'from-[#8E44AD] to-[#8E44AD]',
+        'gradient'  => 'from-[#4d5dff] to-[#3f3ff1]',
         'hover'     => 'purple',
     ],
     [
