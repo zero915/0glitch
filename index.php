@@ -9,9 +9,9 @@ $releases = $data['releases'];
 $albums = $data['albums'];
 $platformHover = $data['platformHover'];
 
-// Platforms: show all — always Spotify, Apple Music, YouTube, Amazon Music first; then the rest in data order
+// Platforms: show 8 total — always Spotify, Amazon, YouTube Music, Apple Music; then 4 random from the rest
 $allPlatforms = $data['platforms'];
-$alwaysShowNames = ['Spotify', 'Apple Music', 'YouTube', 'Amazon Music'];
+$alwaysShowNames = ['Spotify', 'Amazon Music', 'YouTube Music', 'Apple Music'];
 $alwaysPlatforms = [];
 foreach ($alwaysShowNames as $name) {
     foreach ($allPlatforms as $p) {
@@ -24,7 +24,9 @@ foreach ($alwaysShowNames as $name) {
 $otherPlatforms = array_values(array_filter($allPlatforms, function ($p) use ($alwaysShowNames) {
     return !in_array($p['name'] ?? '', $alwaysShowNames);
 }));
-$platforms = array_merge($alwaysPlatforms, $otherPlatforms);
+shuffle($otherPlatforms);
+$randomFour = array_slice($otherPlatforms, 0, 4);
+$platforms = array_merge($alwaysPlatforms, $randomFour);
 
 // Build YouTube and Spotify embed URLs for a release (for in-site player). Prefer YouTube when available.
 function release_embed_urls(array $links) {
@@ -416,19 +418,19 @@ function release_embed_urls(array $links) {
             <div id="subscribe-error" class="hidden mb-6"></div>
             
             <div class="flex justify-center gap-6">
-                <a href="#" class="w-12 h-12 rounded-full bg-glitch-dark border border-white/10 flex items-center justify-center text-gray-400 hover:text-glitch-cyan hover:border-glitch-cyan hover:shadow-[0_0_20px_rgba(0,243,255,0.3)] transition-all duration-300">
+                <!-- <a href="#" class="w-12 h-12 rounded-full bg-glitch-dark border border-white/10 flex items-center justify-center text-gray-400 hover:text-glitch-cyan hover:border-glitch-cyan hover:shadow-[0_0_20px_rgba(0,243,255,0.3)] transition-all duration-300">
                     <i data-lucide="instagram" class="w-5 h-5"></i>
                 </a>
                 <a href="#" class="w-12 h-12 rounded-full bg-glitch-dark border border-white/10 flex items-center justify-center text-gray-400 hover:text-glitch-cyan hover:border-glitch-cyan hover:shadow-[0_0_20px_rgba(0,243,255,0.3)] transition-all duration-300">
                     <i data-lucide="twitter" class="w-5 h-5"></i>
-                </a>
-                <a href="#" class="w-12 h-12 rounded-full bg-glitch-dark border border-white/10 flex items-center justify-center text-gray-400 hover:text-glitch-cyan hover:border-glitch-cyan hover:shadow-[0_0_20px_rgba(0,243,255,0.3)] transition-all duration-300">
+                </a> -->
+                <a href="https://www.facebook.com/people/Zero-Glitch/61581392979788/" class="w-12 h-12 rounded-full bg-glitch-dark border border-white/10 flex items-center justify-center text-gray-400 hover:text-glitch-cyan hover:border-glitch-cyan hover:shadow-[0_0_20px_rgba(0,243,255,0.3)] transition-all duration-300">
                     <i data-lucide="facebook" class="w-5 h-5"></i>
                 </a>
-                <a href="#" class="w-12 h-12 rounded-full bg-glitch-dark border border-white/10 flex items-center justify-center text-gray-400 hover:text-glitch-cyan hover:border-glitch-cyan hover:shadow-[0_0_20px_rgba(0,243,255,0.3)] transition-all duration-300">
+                <a href="https://www.youtube.com/@glitch015" class="w-12 h-12 rounded-full bg-glitch-dark border border-white/10 flex items-center justify-center text-gray-400 hover:text-glitch-cyan hover:border-glitch-cyan hover:shadow-[0_0_20px_rgba(0,243,255,0.3)] transition-all duration-300">
                     <i data-lucide="youtube" class="w-5 h-5"></i>
                 </a>
-                <a href="#" class="w-12 h-12 rounded-full bg-glitch-dark border border-white/10 flex items-center justify-center text-gray-400 hover:text-glitch-cyan hover:border-glitch-cyan hover:shadow-[0_0_20px_rgba(0,243,255,0.3)] transition-all duration-300">
+                <a href="mailto:iam@0glitch.com" class="w-12 h-12 rounded-full bg-glitch-dark border border-white/10 flex items-center justify-center text-gray-400 hover:text-glitch-cyan hover:border-glitch-cyan hover:shadow-[0_0_20px_rgba(0,243,255,0.3)] transition-all duration-300">
                     <i data-lucide="mail" class="w-5 h-5"></i>
                 </a>
             </div>
@@ -441,7 +443,7 @@ function release_embed_urls(array $links) {
             <div class="flex items-center gap-2">
                 <span class="font-display font-bold text-xl text-white">ZERO GLITCH</span>
                 <span class="text-gray-600">|</span>
-                <span class="text-gray-500 text-sm">&copy; 2026 All Rights Reserved</span>
+                <span class="text-gray-500 text-sm">&copy; <?php echo date('Y'); ?> All Rights Reserved</span>
             </div>
             <div class="flex gap-6 text-sm text-gray-500">
                 <a href="#" class="hover:text-glitch-cyan transition-colors">Privacy</a>
