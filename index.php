@@ -261,14 +261,19 @@ function release_embed_urls(array $links) {
             
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="featured-tracks">
                 <?php
-                // Hide "Merry Christmas Sa'yo" in Featured Tracks unless HIDE_MERRY_CHRISTMAS_SAYO=0 (default: hide)
-                $hideChristmasEnv = getenv('HIDE_MERRY_CHRISTMAS_SAYO');
-                $hideMerryChristmas = ($hideChristmasEnv === false || $hideChristmasEnv === '') ? true : filter_var($hideChristmasEnv, FILTER_VALIDATE_BOOLEAN);
+                // Sept 9 - Jan 18: always show Merry Christmas Sa'yo tracks (HIDE_MERRY_CHRISTMAS_SAYO ignored). Outside that window, respect the env var.
+                $month = (int) date('n');
+                $day = (int) date('j');
+                $inChristmasWindow = ($month === 9 && $day >= 9) || in_array($month, [10, 11, 12], true) || ($month === 1 && $day <= 18);
                 $releasesShown = $releases;
-                if ($hideMerryChristmas) {
-                    $releasesShown = array_values(array_filter($releasesShown, function ($r) {
-                        return ($r['album'] ?? '') !== "Merry Christmas Sa'yo";
-                    }));
+                if (!$inChristmasWindow) {
+                    $hideChristmasEnv = getenv('HIDE_MERRY_CHRISTMAS_SAYO');
+                    $hideMerryChristmas = ($hideChristmasEnv === false || $hideChristmasEnv === '') ? true : filter_var($hideChristmasEnv, FILTER_VALIDATE_BOOLEAN);
+                    if ($hideMerryChristmas) {
+                        $releasesShown = array_values(array_filter($releasesShown, function ($r) {
+                            return ($r['album'] ?? '') !== "Merry Christmas Sa'yo";
+                        }));
+                    }
                 }
                 shuffle($releasesShown);
                 $releasesShown = array_slice($releasesShown, 0, 4);
