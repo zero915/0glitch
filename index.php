@@ -283,15 +283,16 @@ function release_embed_urls(array $links) {
             shuffle($releasesShown);
             $releasesShown = array_slice($releasesShown, 0, 12);
             $featuredSlides = array_chunk($releasesShown, 4);
+            $slidePct = count($featuredSlides) > 0 ? (100 / count($featuredSlides)) : 100;
             ?>
             <div class="relative" id="featured-tracks-carousel" data-carousel-scroll-speed="<?php echo (int) $carouselScrollSpeed; ?>">
-                <button type="button" class="featured-carousel-prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 md:-translate-x-4 z-10 w-10 h-10 md:w-12 md:h-12 rounded-full bg-glitch-dark/90 border border-white/20 text-white flex items-center justify-center hover:bg-glitch-cyan/20 hover:border-glitch-cyan/50 transition-colors focus:outline-none focus:ring-2 focus:ring-glitch-cyan" aria-label="Previous tracks">
-                    <i data-lucide="chevron-left" class="w-5 h-5 md:w-6 md:h-6"></i>
+                <button type="button" class="featured-carousel-prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 z-10 w-8 h-8 rounded-full bg-black/30 text-white/70 flex items-center justify-center hover:bg-black/50 hover:text-white border border-white/10 hover:border-white/20 transition-colors focus:outline-none focus:ring-1 focus:ring-white/30" aria-label="Previous tracks">
+                    <i data-lucide="chevron-left" class="w-4 h-4"></i>
                 </button>
-                <div class="overflow-hidden px-2">
+                <div class="overflow-hidden px-2 py-5">
                     <div class="featured-tracks-track flex transition-transform duration-300 ease-out">
                         <?php foreach ($featuredSlides as $slide): ?>
-                        <div class="featured-tracks-slide w-full flex-shrink-0 grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div class="featured-tracks-slide flex-shrink-0 grid grid-cols-2 md:grid-cols-4 gap-6 overflow-hidden py-4" style="flex-basis: <?php echo $slidePct; ?>%; width: <?php echo $slidePct; ?>%;">
                             <?php foreach ($slide as $r):
                                 $links = $r['links'] ?? [];
                                 $releaseLinks = array_filter($links);
@@ -311,8 +312,9 @@ function release_embed_urls(array $links) {
                                  data-amazon-link="<?php echo htmlspecialchars($links['amazon'] ?? ''); ?>"
                                  data-apple-link="<?php echo htmlspecialchars($links['apple'] ?? ''); ?>"
                                  data-external-link="<?php echo htmlspecialchars($externalLink); ?>">
-                                <div class="aspect-square overflow-hidden relative">
-                                    <img src="<?php echo htmlspecialchars($trackImage); ?>" alt="<?php echo htmlspecialchars($r['title']); ?> - Cover" class="track-card-poster w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                <div class="w-full overflow-hidden rounded-t-xl" style="aspect-ratio: 1/1.1; padding: 5% 0;">
+                                    <div class="aspect-square relative w-full h-full">
+                                        <img src="<?php echo htmlspecialchars($trackImage); ?>" alt="<?php echo htmlspecialchars($r['title']); ?> - Cover" class="track-card-poster w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                                     <?php if ($trackVideo !== ''): ?>
                                     <video class="track-card-video absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300" muted loop playsinline autoplay preload="metadata" aria-hidden="true">
                                         <source src="<?php echo htmlspecialchars($trackVideo); ?>" type="video/mp4">
@@ -322,6 +324,7 @@ function release_embed_urls(array $links) {
                                         <span class="w-16 h-16 bg-glitch-cyan rounded-full flex items-center justify-center text-glitch-dark group-hover:scale-110 transition-transform">
                                             <i data-lucide="play" class="w-8 h-8 fill-current"></i>
                                         </span>
+                                    </div>
                                     </div>
                                 </div>
                                 <div class="p-4">
@@ -339,8 +342,8 @@ function release_embed_urls(array $links) {
                         <?php endforeach; ?>
                     </div>
                 </div>
-                <button type="button" class="featured-carousel-next absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 md:translate-x-4 z-10 w-10 h-10 md:w-12 md:h-12 rounded-full bg-glitch-dark/90 border border-white/20 text-white flex items-center justify-center hover:bg-glitch-cyan/20 hover:border-glitch-cyan/50 transition-colors focus:outline-none focus:ring-2 focus:ring-glitch-cyan" aria-label="Next tracks">
-                    <i data-lucide="chevron-right" class="w-5 h-5 md:w-6 md:h-6"></i>
+                <button type="button" class="featured-carousel-next absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 z-10 w-8 h-8 rounded-full bg-black/30 text-white/70 flex items-center justify-center hover:bg-black/50 hover:text-white border border-white/10 hover:border-white/20 transition-colors focus:outline-none focus:ring-1 focus:ring-white/30" aria-label="Next tracks">
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
                 </button>
             </div>
         </div>
@@ -981,7 +984,8 @@ function release_embed_urls(array $links) {
             function goToSlide(index) {
                 if (totalSlides === 0) return;
                 currentIndex = ((index % totalSlides) + totalSlides) % totalSlides;
-                if (track) track.style.transform = 'translateX(-' + (currentIndex * 100) + '%)';
+                var pct = totalSlides > 0 ? (100 / totalSlides) : 0;
+                if (track) track.style.transform = 'translateX(-' + (currentIndex * pct) + '%)';
                 resetAutoTimer();
             }
 
