@@ -43,6 +43,12 @@ shuffle($otherPlatforms);
 $randomFour = array_slice($otherPlatforms, 0, 4);
 $platforms = array_merge($alwaysPlatforms, $randomFour);
 
+// Featured Tracks carousel: seconds of inactivity before auto-advance (default 15)
+$carouselScrollSpeed = (int) (getenv('CAROUSEL_SCROLL_SPEED') ?: 15);
+if ($carouselScrollSpeed < 1) {
+    $carouselScrollSpeed = 15;
+}
+
 // Build YouTube and Spotify embed URLs for a release (for in-site player). Prefer YouTube when available.
 function release_embed_urls(array $links) {
     $out = ['youtube' => '', 'spotify' => ''];
@@ -259,69 +265,83 @@ function release_embed_urls(array $links) {
                 </p>
             </div>
             
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="featured-tracks">
-                <?php
-                // Sept 9 - Jan 18: always show Merry Christmas Sa'yo tracks (HIDE_MERRY_CHRISTMAS_SAYO ignored). Outside that window, respect the env var.
-                $month = (int) date('n');
-                $day = (int) date('j');
-                $inChristmasWindow = ($month === 9 && $day >= 9) || in_array($month, [10, 11, 12], true) || ($month === 1 && $day <= 18);
-                $releasesShown = $releases;
-                if (!$inChristmasWindow) {
-                    $hideChristmasEnv = getenv('HIDE_MERRY_CHRISTMAS_SAYO');
-                    $hideMerryChristmas = ($hideChristmasEnv === false || $hideChristmasEnv === '') ? true : filter_var($hideChristmasEnv, FILTER_VALIDATE_BOOLEAN);
-                    if ($hideMerryChristmas) {
-                        $releasesShown = array_values(array_filter($releasesShown, function ($r) {
-                            return ($r['album'] ?? '') !== "Merry Christmas Sa'yo";
-                        }));
-                    }
+            <?php
+            // Sept 9 - Jan 18: always show Merry Christmas Sa'yo tracks (HIDE_MERRY_CHRISTMAS_SAYO ignored). Outside that window, respect the env var.
+            $month = (int) date('n');
+            $day = (int) date('j');
+            $inChristmasWindow = ($month === 9 && $day >= 9) || in_array($month, [10, 11, 12], true) || ($month === 1 && $day <= 18);
+            $releasesShown = $releases;
+            if (!$inChristmasWindow) {
+                $hideChristmasEnv = getenv('HIDE_MERRY_CHRISTMAS_SAYO');
+                $hideMerryChristmas = ($hideChristmasEnv === false || $hideChristmasEnv === '') ? true : filter_var($hideChristmasEnv, FILTER_VALIDATE_BOOLEAN);
+                if ($hideMerryChristmas) {
+                    $releasesShown = array_values(array_filter($releasesShown, function ($r) {
+                        return ($r['album'] ?? '') !== "Merry Christmas Sa'yo";
+                    }));
                 }
-                shuffle($releasesShown);
-                $releasesShown = array_slice($releasesShown, 0, 4);
-                foreach ($releasesShown as $r):
-                    $links = $r['links'] ?? [];
-                    $releaseLinks = array_filter($links);
-                    $embeds = release_embed_urls($links);
-                    $hasEmbed = $embeds['youtube'] !== '' || $embeds['spotify'] !== '';
-                    $externalLink = !empty($releaseLinks) ? $releaseLinks[array_rand($releaseLinks)] : '';
-                    // Use this release's track links for modal (not album); embeds are built from same $links
-                ?>
-                <?php $trackVideo = $r['video'] ?? ''; $trackImage = $r['image'] ?? ''; ?>
-                <div class="group relative bg-glitch-dark rounded-xl overflow-hidden border border-white/5 hover:border-glitch-cyan/50 transition-all duration-300 hover:transform hover:scale-105 block cursor-pointer"
-                     role="button" tabindex="0" data-track-card
-                     data-title="<?php echo htmlspecialchars($r['title']); ?>"
-                     data-album="<?php echo htmlspecialchars($r['album']); ?>"
-                     data-video="<?php echo htmlspecialchars($trackVideo); ?>"
-                     data-youtube-embed="<?php echo htmlspecialchars($embeds['youtube']); ?>"
-                     data-spotify-embed="<?php echo htmlspecialchars($embeds['spotify']); ?>"
-                     data-spotify-link="<?php echo htmlspecialchars($links['spotify'] ?? ''); ?>"
-                     data-youtube-link="<?php echo htmlspecialchars($links['youtube'] ?? ''); ?>"
-                     data-amazon-link="<?php echo htmlspecialchars($links['amazon'] ?? ''); ?>"
-                     data-apple-link="<?php echo htmlspecialchars($links['apple'] ?? ''); ?>"
-                     data-external-link="<?php echo htmlspecialchars($externalLink); ?>">
-                    <div class="aspect-square overflow-hidden relative">
-                        <img src="<?php echo htmlspecialchars($trackImage); ?>" alt="<?php echo htmlspecialchars($r['title']); ?> - Cover" class="track-card-poster w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <?php if ($trackVideo !== ''): ?>
-                        <video class="track-card-video absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300" muted loop playsinline autoplay preload="metadata" aria-hidden="true">
-                            <source src="<?php echo htmlspecialchars($trackVideo); ?>" type="video/mp4">
-                        </video>
-                        <?php endif; ?>
-                        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                            <span class="w-16 h-16 bg-glitch-cyan rounded-full flex items-center justify-center text-glitch-dark group-hover:scale-110 transition-transform">
-                                <i data-lucide="play" class="w-8 h-8 fill-current"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-base font-bold text-white mb-1"><?php echo htmlspecialchars($r['title']); ?></h3>
-                        <p class="text-gray-400 text-xs mb-2"><?php echo htmlspecialchars($r['album']); ?> • <?php echo htmlspecialchars($r['year']); ?></p>
-                        <div class="flex gap-1 flex-wrap">
-                            <?php foreach ($r['genres'] as $i => $genre): ?>
-                            <span class="text-xs px-2 py-0.5 rounded <?php echo $i % 2 === 0 ? 'bg-glitch-cyan/10 text-glitch-cyan border border-glitch-cyan/20' : 'bg-glitch-magenta/10 text-glitch-magenta border border-glitch-magenta/20'; ?>"><?php echo htmlspecialchars($genre); ?></span>
+            }
+            shuffle($releasesShown);
+            $releasesShown = array_slice($releasesShown, 0, 12);
+            $featuredSlides = array_chunk($releasesShown, 4);
+            ?>
+            <div class="relative" id="featured-tracks-carousel" data-carousel-scroll-speed="<?php echo (int) $carouselScrollSpeed; ?>">
+                <button type="button" class="featured-carousel-prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 md:-translate-x-4 z-10 w-10 h-10 md:w-12 md:h-12 rounded-full bg-glitch-dark/90 border border-white/20 text-white flex items-center justify-center hover:bg-glitch-cyan/20 hover:border-glitch-cyan/50 transition-colors focus:outline-none focus:ring-2 focus:ring-glitch-cyan" aria-label="Previous tracks">
+                    <i data-lucide="chevron-left" class="w-5 h-5 md:w-6 md:h-6"></i>
+                </button>
+                <div class="overflow-hidden px-2">
+                    <div class="featured-tracks-track flex transition-transform duration-300 ease-out">
+                        <?php foreach ($featuredSlides as $slide): ?>
+                        <div class="featured-tracks-slide w-full flex-shrink-0 grid grid-cols-2 md:grid-cols-4 gap-6">
+                            <?php foreach ($slide as $r):
+                                $links = $r['links'] ?? [];
+                                $releaseLinks = array_filter($links);
+                                $embeds = release_embed_urls($links);
+                                $externalLink = !empty($releaseLinks) ? $releaseLinks[array_rand($releaseLinks)] : '';
+                                $trackVideo = $r['video'] ?? ''; $trackImage = $r['image'] ?? '';
+                            ?>
+                            <div class="group relative bg-glitch-dark rounded-xl overflow-hidden border border-white/5 hover:border-glitch-cyan/50 transition-all duration-300 hover:transform hover:scale-105 block cursor-pointer"
+                                 role="button" tabindex="0" data-track-card
+                                 data-title="<?php echo htmlspecialchars($r['title']); ?>"
+                                 data-album="<?php echo htmlspecialchars($r['album']); ?>"
+                                 data-video="<?php echo htmlspecialchars($trackVideo); ?>"
+                                 data-youtube-embed="<?php echo htmlspecialchars($embeds['youtube']); ?>"
+                                 data-spotify-embed="<?php echo htmlspecialchars($embeds['spotify']); ?>"
+                                 data-spotify-link="<?php echo htmlspecialchars($links['spotify'] ?? ''); ?>"
+                                 data-youtube-link="<?php echo htmlspecialchars($links['youtube'] ?? ''); ?>"
+                                 data-amazon-link="<?php echo htmlspecialchars($links['amazon'] ?? ''); ?>"
+                                 data-apple-link="<?php echo htmlspecialchars($links['apple'] ?? ''); ?>"
+                                 data-external-link="<?php echo htmlspecialchars($externalLink); ?>">
+                                <div class="aspect-square overflow-hidden relative">
+                                    <img src="<?php echo htmlspecialchars($trackImage); ?>" alt="<?php echo htmlspecialchars($r['title']); ?> - Cover" class="track-card-poster w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                    <?php if ($trackVideo !== ''): ?>
+                                    <video class="track-card-video absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300" muted loop playsinline autoplay preload="metadata" aria-hidden="true">
+                                        <source src="<?php echo htmlspecialchars($trackVideo); ?>" type="video/mp4">
+                                    </video>
+                                    <?php endif; ?>
+                                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                        <span class="w-16 h-16 bg-glitch-cyan rounded-full flex items-center justify-center text-glitch-dark group-hover:scale-110 transition-transform">
+                                            <i data-lucide="play" class="w-8 h-8 fill-current"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="text-base font-bold text-white mb-1"><?php echo htmlspecialchars($r['title']); ?></h3>
+                                    <p class="text-gray-400 text-xs mb-2"><?php echo htmlspecialchars($r['album']); ?> • <?php echo htmlspecialchars($r['year']); ?></p>
+                                    <div class="flex gap-1 flex-wrap">
+                                        <?php foreach ($r['genres'] as $i => $genre): ?>
+                                        <span class="text-xs px-2 py-0.5 rounded <?php echo $i % 2 === 0 ? 'bg-glitch-cyan/10 text-glitch-cyan border border-glitch-cyan/20' : 'bg-glitch-magenta/10 text-glitch-magenta border border-glitch-magenta/20'; ?>"><?php echo htmlspecialchars($genre); ?></span>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                            </div>
                             <?php endforeach; ?>
                         </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
-                <?php endforeach; ?>
+                <button type="button" class="featured-carousel-next absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 md:translate-x-4 z-10 w-10 h-10 md:w-12 md:h-12 rounded-full bg-glitch-dark/90 border border-white/20 text-white flex items-center justify-center hover:bg-glitch-cyan/20 hover:border-glitch-cyan/50 transition-colors focus:outline-none focus:ring-2 focus:ring-glitch-cyan" aria-label="Next tracks">
+                    <i data-lucide="chevron-right" class="w-5 h-5 md:w-6 md:h-6"></i>
+                </button>
             </div>
         </div>
     </section>
@@ -944,6 +964,41 @@ function release_embed_urls(array $links) {
                 aboutHovering = false;
                 hideVideo();
             });
+        }
+
+        // Featured Tracks carousel: left/right arrows, auto-advance after N seconds of inactivity (from .env CAROUSEL_SCROLL_SPEED)
+        var featuredCarousel = document.getElementById('featured-tracks-carousel');
+        if (featuredCarousel) {
+            var track = featuredCarousel.querySelector('.featured-tracks-track');
+            var slides = featuredCarousel.querySelectorAll('.featured-tracks-slide');
+            var prevBtn = featuredCarousel.querySelector('.featured-carousel-prev');
+            var nextBtn = featuredCarousel.querySelector('.featured-carousel-next');
+            var speedSec = parseInt(featuredCarousel.getAttribute('data-carousel-scroll-speed'), 10) || 15;
+            var currentIndex = 0;
+            var totalSlides = slides.length;
+            var autoTimer = null;
+
+            function goToSlide(index) {
+                if (totalSlides === 0) return;
+                currentIndex = ((index % totalSlides) + totalSlides) % totalSlides;
+                if (track) track.style.transform = 'translateX(-' + (currentIndex * 100) + '%)';
+                resetAutoTimer();
+            }
+
+            function resetAutoTimer() {
+                if (autoTimer) clearInterval(autoTimer);
+                if (totalSlides >= 2) autoTimer = setInterval(function() { goToSlide(currentIndex + 1); }, speedSec * 1000);
+            }
+
+            if (totalSlides >= 2) {
+                if (prevBtn) prevBtn.addEventListener('click', function() { goToSlide(currentIndex - 1); });
+                if (nextBtn) nextBtn.addEventListener('click', function() { goToSlide(currentIndex + 1); });
+                featuredCarousel.addEventListener('click', function() { resetAutoTimer(); });
+                resetAutoTimer();
+            } else {
+                if (prevBtn) prevBtn.style.display = 'none';
+                if (nextBtn) nextBtn.style.display = 'none';
+            }
         }
 
         // Latest Albums: play video (muted, loop) on hover over cover; show image until video ready, then show video (same as Breaking the Silence / about-hero)
