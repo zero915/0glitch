@@ -311,6 +311,19 @@ function release_embed_urls(array $links) {
                     $albumTrackNames = array_map(function ($t) {
                         return is_array($t) ? (isset($t['name']) ? $t['name'] : '') : (string) $t;
                     }, $a['tracks'] ?? []);
+                    $albumTrackSpotifyEmbeds = [];
+                    foreach ($a['tracks'] ?? [] as $t) {
+                        $url = is_array($t) ? ($t['spotify'] ?? '') : '';
+                        if ($url !== '' && preg_match('#/(track|album)/([a-zA-Z0-9]+)#', $url, $m)) {
+                            $albumTrackSpotifyEmbeds[] = 'https://open.spotify.com/embed/' . $m[1] . '/' . $m[2];
+                        } else {
+                            $albumTrackSpotifyEmbeds[] = '';
+                        }
+                    }
+                    $ytListId = '';
+                    if (!empty($albumEmbeds['youtube']) && preg_match('/[?&]list=([a-zA-Z0-9_-]+)/', $albumEmbeds['youtube'], $m)) {
+                        $ytListId = $m[1];
+                    }
                 ?>
                 <div class="bg-glitch-surface rounded-xl overflow-hidden border border-white/5 hover:border-glitch-cyan/30 transition-all duration-300 flex flex-col">
                     <div class="aspect-square overflow-hidden relative flex-shrink-0 group/cover">
@@ -320,6 +333,8 @@ function release_embed_urls(array $links) {
                             data-title="<?php echo htmlspecialchars($a['title']); ?>"
                             data-album="<?php echo htmlspecialchars($a['title']); ?> • <?php echo (int) ($a['track_count'] ?? 0); ?> tracks"
                             data-tracks="<?php echo htmlspecialchars(json_encode($albumTrackNames), ENT_QUOTES, 'UTF-8'); ?>"
+                            data-track-spotify-embeds="<?php echo htmlspecialchars(json_encode($albumTrackSpotifyEmbeds), ENT_QUOTES, 'UTF-8'); ?>"
+                            data-youtube-list-id="<?php echo htmlspecialchars($ytListId); ?>"
                             data-youtube-embed="<?php echo htmlspecialchars($albumEmbeds['youtube']); ?>"
                             data-spotify-embed="<?php echo htmlspecialchars($albumEmbeds['spotify']); ?>"
                             data-youtube-link="<?php echo htmlspecialchars($albumLinks['youtube'] ?? ''); ?>"
@@ -517,7 +532,8 @@ function release_embed_urls(array $links) {
                 <button type="button" data-album-tab="spotify" class="flex-1 py-3 text-sm font-medium text-gray-400 hover:text-white border-b-2 border-transparent data-[active]:text-glitch-cyan data-[active]:border-glitch-cyan transition-colors hidden">Spotify</button>
             </div>
             <div class="flex flex-col md:flex-row flex-1 min-h-0">
-                <div class="flex-1 min-w-0 bg-black flex items-center justify-center">
+                <div class="flex-1 min-w-0 bg-black flex items-center justify-center relative">
+                    <div id="album-youtube-player-wrap" class="absolute inset-0 hidden w-full h-full min-h-[280px]"></div>
                     <iframe id="album-playlist-iframe" class="w-full aspect-video md:aspect-auto md:h-full md:min-h-[320px]" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="Album playlist"></iframe>
                 </div>
                 <div class="w-full md:w-72 flex-shrink-0 border-t md:border-t-0 md:border-l border-white/10 flex flex-col bg-glitch-dark/50">
@@ -537,6 +553,7 @@ function release_embed_urls(array $links) {
     </div>
 
     <script src="script.js"></script>
+    <script src="https://www.youtube.com/iframe_api" async></script>
     <script>
         lucide.createIcons();
     </script>
@@ -633,9 +650,10 @@ function release_embed_urls(array $links) {
             });
         });
 
-        // Latest Albums: open album-playlist modal (embed + track list)
+        // Latest Albums: open album-playlist modal (embed + track list, clickable tracks)
         var albumModal = document.getElementById('album-playlist-modal');
         var albumIframe = document.getElementById('album-playlist-iframe');
+        var albumYoutubeWrap = document.getElementById('album-youtube-player-wrap');
         var albumCloseBtn = document.getElementById('album-playlist-close');
         var albumTitleEl = document.getElementById('album-playlist-title');
         var albumSubtitleEl = document.getElementById('album-playlist-subtitle');
@@ -644,11 +662,50 @@ function release_embed_urls(array $links) {
         var albumTabSp = document.querySelector('[data-album-tab="spotify"]');
         var albumTabsWrap = document.getElementById('album-playlist-tabs');
 
+        function destroyAlbumYtPlayer() {
+            if (albumModal._ytPlayer && albumModal._ytPlayer.destroy) {
+                try { albumModal._ytPlayer.destroy(); } catch (e) {}
+                albumModal._ytPlayer = null;
+            }
+            albumYoutubeWrap.innerHTML = '';
+            albumYoutubeWrap.classList.add('hidden');
+        }
+
+        function createAlbumYtPlayer(listId) {
+            albumYoutubeWrap.innerHTML = '<div id="album-yt-player-inner"></div>';
+            if (!window.YT || !window.YT.Player) return;
+            new window.YT.Player('album-yt-player-inner', {
+                width: '100%',
+                height: '100%',
+                playerVars: { list: listId, autoplay: 1 },
+                events: { onReady: function(e) { albumModal._ytPlayer = e.target; } }
+            });
+        }
+
+        window.onYouTubeIframeAPIReady = (function(prev) {
+            return function() {
+                if (prev) prev();
+                if (window._albumPendingYtListId && window._albumPendingYtWrap) {
+                    createAlbumYtPlayer(window._albumPendingYtListId);
+                    window._albumPendingYtListId = null;
+                    window._albumPendingYtWrap = null;
+                }
+            };
+        })(window.onYouTubeIframeAPIReady);
+
         function openAlbumModal(btn) {
             var ytEmbed = btn.getAttribute('data-youtube-embed') || '';
             var spEmbed = btn.getAttribute('data-spotify-embed') || '';
             if (!ytEmbed && !spEmbed) return;
             albumModal._albumCard = btn;
+            var ytListId = btn.getAttribute('data-youtube-list-id') || '';
+            var trackSpotifyEmbeds = [];
+            try {
+                var je = btn.getAttribute('data-track-spotify-embeds');
+                if (je) trackSpotifyEmbeds = JSON.parse(je);
+            } catch (e) {}
+            albumModal._trackSpotifyEmbeds = trackSpotifyEmbeds;
+
             albumTitleEl.textContent = btn.getAttribute('data-title') || '';
             albumSubtitleEl.textContent = btn.getAttribute('data-album') || '';
             var tracksJson = btn.getAttribute('data-tracks');
@@ -660,7 +717,10 @@ function release_embed_urls(array $links) {
             tracks.forEach(function(name, i) {
                 if (!name) return;
                 var li = document.createElement('li');
-                li.className = 'px-3 py-2 flex items-center gap-2';
+                li.className = 'px-3 py-2 flex items-center gap-2 cursor-pointer hover:bg-white/10 rounded transition-colors album-track-item';
+                li.setAttribute('data-index', String(i));
+                li.setAttribute('role', 'button');
+                li.setAttribute('tabindex', '0');
                 var num = document.createElement('span');
                 num.className = 'text-gray-500 tabular-nums w-6 flex-shrink-0';
                 num.textContent = (i + 1) + '.';
@@ -688,12 +748,25 @@ function release_embed_urls(array $links) {
             albumTabYt.classList.toggle('hidden', !ytEmbed);
             albumTabSp.classList.toggle('hidden', !spEmbed);
             albumTabsWrap.classList.toggle('hidden', !ytEmbed && !spEmbed);
-            if (ytEmbed) {
-                albumIframe.src = ytEmbed;
+
+            if (ytEmbed && ytListId) {
+                albumIframe.classList.add('hidden');
+                albumIframe.src = 'about:blank';
+                albumYoutubeWrap.classList.remove('hidden');
+                if (window.YT && window.YT.Player) {
+                    createAlbumYtPlayer(ytListId);
+                } else {
+                    window._albumPendingYtListId = ytListId;
+                    window._albumPendingYtWrap = albumYoutubeWrap;
+                }
+                albumModal._albumCurrentTab = 'youtube';
                 albumTabYt.setAttribute('data-active', '');
                 albumTabSp.removeAttribute('data-active');
             } else {
+                destroyAlbumYtPlayer();
+                albumIframe.classList.remove('hidden');
                 albumIframe.src = spEmbed;
+                albumModal._albumCurrentTab = 'spotify';
                 albumTabSp.setAttribute('data-active', '');
                 albumTabYt.removeAttribute('data-active');
             }
@@ -702,10 +775,39 @@ function release_embed_urls(array $links) {
             if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
         }
 
+        function setAlbumTrackActive(index) {
+            albumTracksList.querySelectorAll('.album-track-item').forEach(function(el) {
+                el.classList.toggle('bg-glitch-cyan/20', parseInt(el.getAttribute('data-index'), 10) === index);
+                el.classList.toggle('text-glitch-cyan', parseInt(el.getAttribute('data-index'), 10) === index);
+            });
+        }
+
+        albumTracksList.addEventListener('click', function(e) {
+            var item = e.target.closest('.album-track-item');
+            if (!item || !albumModal._albumCard) return;
+            var index = parseInt(item.getAttribute('data-index'), 10);
+            if (isNaN(index)) return;
+            setAlbumTrackActive(index);
+            if (albumModal._albumCurrentTab === 'youtube' && albumModal._ytPlayer && albumModal._ytPlayer.playVideoAt) {
+                albumModal._ytPlayer.playVideoAt(index);
+            } else if (albumModal._albumCurrentTab === 'spotify' && albumModal._trackSpotifyEmbeds && albumModal._trackSpotifyEmbeds[index]) {
+                albumIframe.src = albumModal._trackSpotifyEmbeds[index];
+            }
+        });
+        albumTracksList.addEventListener('keydown', function(e) {
+            if (e.key !== 'Enter' && e.key !== ' ') return;
+            var item = e.target.closest('.album-track-item');
+            if (!item) return;
+            e.preventDefault();
+            item.click();
+        });
+
         function closeAlbumModal() {
             albumModal.classList.add('hidden');
             albumModal.classList.remove('flex');
             albumIframe.src = 'about:blank';
+            albumIframe.classList.remove('hidden');
+            destroyAlbumYtPlayer();
         }
 
         document.querySelectorAll('[data-album-play-card]').forEach(function(btn) {
@@ -731,13 +833,27 @@ function release_embed_urls(array $links) {
                 if (!card) return;
                 var yt = card.getAttribute('data-youtube-embed');
                 var sp = card.getAttribute('data-spotify-embed');
+                var ytListId = card.getAttribute('data-youtube-list-id') || '';
                 var name = this.getAttribute('data-album-tab');
-                if (name === 'youtube' && yt) {
-                    albumIframe.src = yt;
+                if (name === 'youtube' && yt && ytListId) {
+                    destroyAlbumYtPlayer();
+                    albumIframe.classList.add('hidden');
+                    albumIframe.src = 'about:blank';
+                    albumYoutubeWrap.classList.remove('hidden');
+                    if (window.YT && window.YT.Player) {
+                        createAlbumYtPlayer(ytListId);
+                    } else {
+                        window._albumPendingYtListId = ytListId;
+                        window._albumPendingYtWrap = albumYoutubeWrap;
+                    }
+                    albumModal._albumCurrentTab = 'youtube';
                     document.querySelectorAll('[data-album-tab]').forEach(function(t) { t.removeAttribute('data-active'); });
                     this.setAttribute('data-active', '');
                 } else if (name === 'spotify' && sp) {
+                    destroyAlbumYtPlayer();
+                    albumIframe.classList.remove('hidden');
                     albumIframe.src = sp;
+                    albumModal._albumCurrentTab = 'spotify';
                     document.querySelectorAll('[data-album-tab]').forEach(function(t) { t.removeAttribute('data-active'); });
                     this.setAttribute('data-active', '');
                 }
