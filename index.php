@@ -11,7 +11,7 @@ $platformHover = $data['platformHover'];
 
 // Platforms: show 8 total — always Spotify, Amazon, YouTube Music, Apple Music; then 4 random from the rest
 $allPlatforms = $data['platforms'];
-$alwaysShowNames = ['Spotify', 'Amazon Music', 'YouTube Music', 'Apple Music'];
+$alwaysShowNames = ['Spotify', 'YouTube Music', 'Apple Music', 'Amazon Music'];
 $alwaysPlatforms = [];
 foreach ($alwaysShowNames as $name) {
     foreach ($allPlatforms as $p) {
