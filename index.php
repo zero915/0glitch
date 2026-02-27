@@ -246,7 +246,16 @@ function release_embed_urls(array $links) {
             
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="featured-tracks">
                 <?php
+                // Show Merry Christmas Sa'yo tracks in Featured Tracks only between Sept 9 and Jan 18
+                $month = (int) date('n');
+                $day = (int) date('j');
+                $inChristmasWindow = ($month === 9 && $day >= 9) || in_array($month, [10, 11, 12], true) || ($month === 1 && $day <= 18);
                 $releasesShown = $releases;
+                if (!$inChristmasWindow) {
+                    $releasesShown = array_values(array_filter($releasesShown, function ($r) {
+                        return ($r['album'] ?? '') !== "Merry Christmas Sa'yo";
+                    }));
+                }
                 shuffle($releasesShown);
                 $releasesShown = array_slice($releasesShown, 0, 4);
                 foreach ($releasesShown as $r):
