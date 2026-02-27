@@ -1110,12 +1110,15 @@ function release_embed_urls(array $links) {
             }
         }
 
-        // Latest Albums: play video (muted, loop) on hover over cover; show image until video ready, then show video (same as Breaking the Silence / about-hero)
+        // Latest Albums: play video (muted, loop) on hover over cover; on touch, long-press (500ms) starts video like hover
         document.querySelectorAll('.album-cover-media').forEach(function(media) {
             var video = media.querySelector('.album-cover-video');
             if (!video) return;
             var poster = media.querySelector('.album-cover-poster');
             var hovering = false;
+            var longPressTimer = null;
+            var longPressTriggered = false;
+            var suppressNextClick = false;
             function showVideo() {
                 if (!hovering) return;
                 video.classList.remove('opacity-0');
@@ -1125,6 +1128,11 @@ function release_embed_urls(array $links) {
                 video.pause();
                 video.classList.add('opacity-0');
                 if (poster) poster.classList.remove('opacity-0');
+            }
+            function startVideoLikeHover() {
+                hovering = true;
+                video.play().catch(function() {});
+                if (video.readyState >= 2) showVideo();
             }
             video.addEventListener('canplay', function() { if (hovering) showVideo(); });
             media.addEventListener('mouseenter', function() {
@@ -1136,6 +1144,43 @@ function release_embed_urls(array $links) {
                 hovering = false;
                 hideVideo();
             });
+            media.addEventListener('touchstart', function() {
+                longPressTriggered = false;
+                longPressTimer = setTimeout(function() {
+                    longPressTimer = null;
+                    longPressTriggered = true;
+                    startVideoLikeHover();
+                }, 500);
+            }, { passive: true });
+            media.addEventListener('touchmove', function() {
+                if (longPressTimer) { clearTimeout(longPressTimer); longPressTimer = null; }
+            }, { passive: true });
+            media.addEventListener('touchend', function() {
+                if (longPressTimer) clearTimeout(longPressTimer);
+                longPressTimer = null;
+                if (longPressTriggered) {
+                    hovering = false;
+                    hideVideo();
+                    longPressTriggered = false;
+                    suppressNextClick = true;
+                }
+            }, { passive: true });
+            media.addEventListener('touchcancel', function() {
+                if (longPressTimer) clearTimeout(longPressTimer);
+                longPressTimer = null;
+                if (longPressTriggered) {
+                    hovering = false;
+                    hideVideo();
+                    longPressTriggered = false;
+                }
+            }, { passive: true });
+            media.addEventListener('click', function(e) {
+                if (suppressNextClick) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    suppressNextClick = false;
+                }
+            }, true);
         });
 
         // Track card thumbnails: show video when it can play (loop, muted); keep image visible until then
