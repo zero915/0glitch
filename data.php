@@ -193,19 +193,19 @@ return [
         'hover'     => 'green',
     ],
     [
+        'name'      => 'YouTube Music',
+        'url'       => 'https://music.youtube.com/channel/UC82iAlbso9-IoCdeBCbSMDQ',
+        'icon'      => 'youtube',
+        'icon_slug' => 'youtube',
+        'gradient'  => 'from-red-600 to-red-800',
+        'hover'     => 'red',
+    ],
+    [
         'name'      => 'Apple Music',
         'url'       => 'https://music.apple.com/us/artist/zero-glitch/1842895473',
         'icon'      => 'apple',
         'icon_slug' => 'applemusic',
         'gradient'  => 'from-red-500 to-pink-600',
-        'hover'     => 'red',
-    ],
-    [
-        'name'      => 'YouTube',
-        'url'       => 'https://music.youtube.com/channel/UC82iAlbso9-IoCdeBCbSMDQ',
-        'icon'      => 'youtube',
-        'icon_slug' => 'youtube',
-        'gradient'  => 'from-red-600 to-red-800',
         'hover'     => 'red',
     ],
     [
@@ -241,6 +241,14 @@ return [
         'hover'     => 'cyan',
     ],
     [
+        'name'      => 'SoundCloud',
+        'url'       => 'https://soundcloud.com/zero915',
+        'icon'      => 'music',
+        'icon_slug' => 'soundcloud',
+        'gradient'  => 'from-orange-500 to-orange-600',
+        'hover'     => 'orange',
+    ],
+    [
         'name'      => 'Joox',
         'url'       => 'https://www.joox.com/artist/1VLESVk10BTN7d1_RLHwQw==',
         'icon'      => 'audio-lines',
@@ -251,7 +259,7 @@ return [
     ],
     [
         'name'      => 'FLO',
-        'url'       => 'https://www.music-flo.com/detail/artist/412608290/',
+        'url'       => 'https://www.music-flo.com/detail/artist/412608290/album?sortType=RECENT&roleType=RELEASE',
         'icon'      => 'music',
         'icon_slug' => null,
         'icon_data' => 'icons/flo-app.png',
