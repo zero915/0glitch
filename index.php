@@ -390,7 +390,7 @@ function release_embed_urls(array $links) {
                         <img src="<?php echo htmlspecialchars($a['image']); ?>" alt="<?php echo htmlspecialchars($a['title']); ?> - Album Cover" class="album-cover-poster w-full h-full object-cover">
                         <?php endif; ?>
                         <?php if ($albumVideo !== ''): ?>
-                        <video class="album-cover-video absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 z-[1]" muted loop playsinline preload="metadata" aria-hidden="true">
+                        <video class="album-cover-video absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 z-[1] pointer-events-none" muted loop playsinline preload="metadata" aria-hidden="true">
                             <source src="<?php echo htmlspecialchars($albumVideo); ?>" type="video/mp4">
                         </video>
                         <?php endif; ?>
