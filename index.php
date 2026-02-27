@@ -760,6 +760,7 @@ function release_embed_urls(array $links) {
                     window._albumPendingYtWrap = albumYoutubeWrap;
                 }
                 albumModal._albumCurrentTab = 'youtube';
+                albumTracksList.classList.remove('album-tracks-display-only');
                 albumTabYt.setAttribute('data-active', '');
                 albumTabSp.removeAttribute('data-active');
             } else {
@@ -767,6 +768,7 @@ function release_embed_urls(array $links) {
                 albumIframe.classList.remove('hidden');
                 albumIframe.src = spEmbed;
                 albumModal._albumCurrentTab = 'spotify';
+                albumTracksList.classList.add('album-tracks-display-only');
                 albumTabSp.setAttribute('data-active', '');
                 albumTabYt.removeAttribute('data-active');
             }
@@ -783,15 +785,14 @@ function release_embed_urls(array $links) {
         }
 
         albumTracksList.addEventListener('click', function(e) {
+            if (albumModal._albumCurrentTab !== 'youtube') return;
             var item = e.target.closest('.album-track-item');
             if (!item || !albumModal._albumCard) return;
             var index = parseInt(item.getAttribute('data-index'), 10);
             if (isNaN(index)) return;
             setAlbumTrackActive(index);
-            if (albumModal._albumCurrentTab === 'youtube' && albumModal._ytPlayer && albumModal._ytPlayer.playVideoAt) {
+            if (albumModal._ytPlayer && albumModal._ytPlayer.playVideoAt) {
                 albumModal._ytPlayer.playVideoAt(index);
-            } else if (albumModal._albumCurrentTab === 'spotify' && albumModal._trackSpotifyEmbeds && albumModal._trackSpotifyEmbeds[index]) {
-                albumIframe.src = albumModal._trackSpotifyEmbeds[index];
             }
         });
         albumTracksList.addEventListener('keydown', function(e) {
@@ -847,6 +848,7 @@ function release_embed_urls(array $links) {
                         window._albumPendingYtWrap = albumYoutubeWrap;
                     }
                     albumModal._albumCurrentTab = 'youtube';
+                    albumTracksList.classList.remove('album-tracks-display-only');
                     document.querySelectorAll('[data-album-tab]').forEach(function(t) { t.removeAttribute('data-active'); });
                     this.setAttribute('data-active', '');
                 } else if (name === 'spotify' && sp) {
@@ -854,6 +856,7 @@ function release_embed_urls(array $links) {
                     albumIframe.classList.remove('hidden');
                     albumIframe.src = sp;
                     albumModal._albumCurrentTab = 'spotify';
+                    albumTracksList.classList.add('album-tracks-display-only');
                     document.querySelectorAll('[data-album-tab]').forEach(function(t) { t.removeAttribute('data-active'); });
                     this.setAttribute('data-active', '');
                 }

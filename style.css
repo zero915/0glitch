@@ -142,3 +142,12 @@ html {
 .equalizer-bar:nth-child(3) { animation-delay: 0.2s; }
 .equalizer-bar:nth-child(4) { animation-delay: 0.3s; }
 .equalizer-bar:nth-child(5) { animation-delay: 0.4s; }
+
+/* Album playlist modal: track list is display-only when Spotify tab is active */
+.album-tracks-display-only .album-track-item {
+    cursor: default;
+    pointer-events: none;
+}
+.album-tracks-display-only .album-track-item:hover {
+    background: transparent;
+}
