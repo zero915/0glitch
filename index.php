@@ -66,6 +66,13 @@ $carouselScrollSpeed = (int) (getenv('CAROUSEL_SCROLL_SPEED') ?: 15);
 if ($carouselScrollSpeed < 1) {
     $carouselScrollSpeed = 15;
 }
+// Featured Tracks carousel: number of slides (default 4). Each slide shows 4 tracks; total tracks = slides × 4.
+$featuredSlidesCount = (int) (getenv('FEATURED_TRACKS_SLIDES') ?: 4);
+if ($featuredSlidesCount < 1) {
+    $featuredSlidesCount = 4;
+}
+$featuredTracksPerSlide = 4;
+$featuredTrackCount = $featuredSlidesCount * $featuredTracksPerSlide;
 
 // Base URL for SEO (canonical, Open Graph). Prefer .env SITE_URL, else derive from request.
 $siteUrl = getenv('SITE_URL');
@@ -344,8 +351,8 @@ function release_embed_urls(array $links) {
             // Include singles in the pool for Featured Tracks
             $releasesShown = array_merge($releasesShown, $singlesAsReleases);
             shuffle($releasesShown);
-            $releasesShown = array_slice($releasesShown, 0, 12);
-            $featuredSlides = array_chunk($releasesShown, 4);
+            $releasesShown = array_slice($releasesShown, 0, $featuredTrackCount);
+            $featuredSlides = array_chunk($releasesShown, $featuredTracksPerSlide);
             $numSlides = count($featuredSlides);
             $slidePct = $numSlides > 0 ? (100 / $numSlides) : 100;
             $trackWidthPct = $numSlides * 100;
