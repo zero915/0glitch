@@ -56,23 +56,23 @@ $albums = [
         'track_count'  => 15,
         'year'         => '2025',
         'description'  => 'Full-length upgrade. New sounds, same malfunction.',
-        'genres'       => ['Pop', 'Indie', 'Rock', 'Rap'],
+        'genres'       => ['Pop', 'Alternative', 'Rock', 'Hip-hop'],
         'tracks'       => [
-            ['name' => 'System Upgrade', 'spotify' => 'https://open.spotify.com/track/4OmgpP88rPpGNGVKiCR61g', 'youtube' => 'https://music.youtube.com/watch?v=BxtLOu-6HhY', 'image' => 'images/system-upgrade.jpg', 'video' => 'videos/system-upgrade.mp4'],
-            ['name' => 'Ikaw Lang',      'spotify' => 'https://open.spotify.com/track/2HpscrCRIhaQ7hKYn2yDUM', 'youtube' => 'https://music.youtube.com/watch?v=cbxWEK6ecos', 'image' => 'images/ikaw-lang.jpg', 'video' => 'videos/ikaw-lang.mp4'],
-            ['name' => 'Fun Run',        'spotify' => 'https://open.spotify.com/track/7A8QY2pTIlNHwQhn0JpEyk', 'youtube' => 'https://music.youtube.com/watch?v=NnuidU4nfWo', 'image' => 'images/fun-run.jpg', 'video' => 'videos/fun-run.mp4'],
-            ['name' => 'U + Me',         'spotify' => 'https://open.spotify.com/track/2IGcIbNpaUGi4IjRSHPr7N', 'youtube' => 'https://music.youtube.com/watch?v=fyh4nzAW9-4', 'image' => 'images/u-me.jpg', 'video' => 'videos/u-me.mp4'],
-            ['name' => "Flex Para Sa'yo",'spotify' => 'https://open.spotify.com/track/0PwZzIMmw46S30rLAqj0SH', 'youtube' => 'https://music.youtube.com/watch?v=3UfGHqrdgc0', 'image' => 'images/flex-para-sayo.jpg', 'video' => 'videos/flex-para-sayo.mp4'],
-            ['name' => 'Sweet Crazy',    'spotify' => 'https://open.spotify.com/track/6lWy9xOdbIJApLriY9CGJS', 'youtube' => 'https://music.youtube.com/watch?v=FvxK_jo_5IQ', 'image' => 'images/sweet-crazy.jpg', 'video' => 'videos/sweet-crazy.mp4'],
-            ['name' => 'Lucky Charm',    'spotify' => 'https://open.spotify.com/track/6eb9s5NLc6I9NqkFQ6qbRp', 'youtube' => 'https://music.youtube.com/watch?v=hK0AQD-YseQ', 'image' => 'images/lucky-charm.jpg', 'video' => 'videos/lucky-charm.mp4'],
-            ['name' => 'King Dumbo',     'spotify' => 'https://open.spotify.com/track/4Rq1K26YDOgPAysHi5eW3t', 'youtube' => 'https://music.youtube.com/watch?v=T9iDB7fyaZY', 'image' => 'images/king-dumbo.jpg', 'video' => 'videos/king-dumbo.mp4'],
-            ['name' => 'Silver',         'spotify' => 'https://open.spotify.com/track/7LiuG0R4tlPDMPrhlJ1Aak', 'youtube' => 'https://music.youtube.com/watch?v=Zm_IJywctMc', 'image' => 'images/silver.jpg','video'=>'videos/silver.mp4'],
-            ['name' => "You Don't Know", 'spotify' => 'https://open.spotify.com/track/0nC2CYz29QcF9htK0Rqnmz', 'youtube' => 'https://music.youtube.com/watch?v=mgjnPWl_fTE', 'image' => 'images/you-dont-know.jpg', 'video' => 'videos/you-dont-know.mp4'],
-            ['name' => 'iMove',          'spotify' => 'https://open.spotify.com/track/4ssMzGURBr7JcVEsFrkHj8', 'youtube' => 'https://music.youtube.com/watch?v=7uIyTu4VF2I', 'image' => 'images/imove.jpg', 'video' => 'videos/imove.mp4'],
-            ['name' => 'Golden Fire',    'spotify' => 'https://open.spotify.com/track/10vNExVk9JmCDJrIqYWJiR', 'youtube' => 'https://music.youtube.com/watch?v=C2wk9TOhjU4', 'image' => 'images/golden-fire.jpg', 'video' => 'videos/golden-fire.mp4'],
-            ['name' => 'Shadow Play',    'spotify' => 'https://open.spotify.com/track/3rYRGt5yPodYD5fUj3Dcan', 'youtube' => 'https://music.youtube.com/watch?v=L2_KvidCXsc', 'image' => 'images/shadow-play.jpg', 'video' => 'videos/shadow-play.mp4'],
-            ['name' => 'Sinta',          'spotify' => 'https://open.spotify.com/track/7pHcQDiZuBur66S41e2cq2', 'youtube' => 'https://music.youtube.com/watch?v=JL19hpZ400E', 'image' => 'images/sinta.jpg', 'video' => 'videos/sinta.mp4'],
-            ['name' => 'Sayaw Sa Hangin','spotify' => 'https://open.spotify.com/track/088yyXF6p9vvXtm7OuV27o', 'youtube' => 'https://music.youtube.com/watch?v=QUBgh4C_eaw', 'image' => 'images/sayaw-sa-hangin.jpg', 'video' => 'videos/sayaw-sa-hangin.mp4'],
+            ['name' => 'System Upgrade', 'spotify' => 'https://open.spotify.com/track/4OmgpP88rPpGNGVKiCR61g', 'youtube' => 'https://music.youtube.com/watch?v=BxtLOu-6HhY', 'image' => 'images/system-upgrade.jpg', 'video' => 'videos/system-upgrade.mp4', 'genres' => ['Alternative', 'Electronic']],
+            ['name' => 'Ikaw Lang',      'spotify' => 'https://open.spotify.com/track/2HpscrCRIhaQ7hKYn2yDUM', 'youtube' => 'https://music.youtube.com/watch?v=cbxWEK6ecos', 'image' => 'images/ikaw-lang.jpg', 'video' => 'videos/ikaw-lang.mp4', 'genres' => ['Alternative', 'Pop']],
+            ['name' => 'Fun Run',        'spotify' => 'https://open.spotify.com/track/7A8QY2pTIlNHwQhn0JpEyk', 'youtube' => 'https://music.youtube.com/watch?v=NnuidU4nfWo', 'image' => 'images/fun-run.jpg', 'video' => 'videos/fun-run.mp4', 'genres' => ['Alternative', 'Indie Pop']],
+            ['name' => 'U + Me',         'spotify' => 'https://open.spotify.com/track/2IGcIbNpaUGi4IjRSHPr7N', 'youtube' => 'https://music.youtube.com/watch?v=fyh4nzAW9-4', 'image' => 'images/u-me.jpg', 'video' => 'videos/u-me.mp4', 'genres' => ['Alternative', 'Pop']],
+            ['name' => "Flex Para Sa'yo",'spotify' => 'https://open.spotify.com/track/0PwZzIMmw46S30rLAqj0SH', 'youtube' => 'https://music.youtube.com/watch?v=3UfGHqrdgc0', 'image' => 'images/flex-para-sayo.jpg', 'video' => 'videos/flex-para-sayo.mp4', 'genres' => ['Hip-Hop', 'Urban Pop']],
+            ['name' => 'Sweet Crazy',    'spotify' => 'https://open.spotify.com/track/6lWy9xOdbIJApLriY9CGJS', 'youtube' => 'https://music.youtube.com/watch?v=FvxK_jo_5IQ', 'image' => 'images/sweet-crazy.jpg', 'video' => 'videos/sweet-crazy.mp4', 'genres' => ['Alternative', 'Pop']],
+            ['name' => 'Lucky Charm',    'spotify' => 'https://open.spotify.com/track/6eb9s5NLc6I9NqkFQ6qbRp', 'youtube' => 'https://music.youtube.com/watch?v=hK0AQD-YseQ', 'image' => 'images/lucky-charm.jpg', 'video' => 'videos/lucky-charm.mp4', 'genres' => ['Alternative', 'Indie Pop']],
+            ['name' => 'King Dumbo',     'spotify' => 'https://open.spotify.com/track/4Rq1K26YDOgPAysHi5eW3t', 'youtube' => 'https://music.youtube.com/watch?v=T9iDB7fyaZY', 'image' => 'images/king-dumbo.jpg', 'video' => 'videos/king-dumbo.mp4', 'genres' => ['Alternative Pop', 'Funk']],
+            ['name' => 'Silver',         'spotify' => 'https://open.spotify.com/track/7LiuG0R4tlPDMPrhlJ1Aak', 'youtube' => 'https://music.youtube.com/watch?v=Zm_IJywctMc', 'image' => 'images/silver.jpg','video'=>'videos/silver.mp4', 'genres' => ['Alternative Pop', 'Synth']],
+            ['name' => "You Don't Know", 'spotify' => 'https://open.spotify.com/track/0nC2CYz29QcF9htK0Rqnmz', 'youtube' => 'https://music.youtube.com/watch?v=mgjnPWl_fTE', 'image' => 'images/you-dont-know.jpg', 'video' => 'videos/you-dont-know.mp4', 'genres' => ['Alternative', 'Rock']],
+            ['name' => 'iMove',          'spotify' => 'https://open.spotify.com/track/4ssMzGURBr7JcVEsFrkHj8', 'youtube' => 'https://music.youtube.com/watch?v=7uIyTu4VF2I', 'image' => 'images/imove.jpg', 'video' => 'videos/imove.mp4', 'genres' => ['Electro-Pop', 'Dance']],
+            ['name' => 'Golden Fire',    'spotify' => 'https://open.spotify.com/track/10vNExVk9JmCDJrIqYWJiR', 'youtube' => 'https://music.youtube.com/watch?v=C2wk9TOhjU4', 'image' => 'images/golden-fire.jpg', 'video' => 'videos/golden-fire.mp4', 'genres' => ['Pop', 'EDM']],
+            ['name' => 'Shadow Play',    'spotify' => 'https://open.spotify.com/track/3rYRGt5yPodYD5fUj3Dcan', 'youtube' => 'https://music.youtube.com/watch?v=L2_KvidCXsc', 'image' => 'images/shadow-play.jpg', 'video' => 'videos/shadow-play.mp4', 'genres' => ['Dark Pop', 'Alternative']],
+            ['name' => 'Sinta',          'spotify' => 'https://open.spotify.com/track/7pHcQDiZuBur66S41e2cq2', 'youtube' => 'https://music.youtube.com/watch?v=JL19hpZ400E', 'image' => 'images/sinta.jpg', 'video' => 'videos/sinta.mp4', 'genres' => ['Alternative Pop', 'Ballad']],
+            ['name' => 'Sayaw Sa Hangin','spotify' => 'https://open.spotify.com/track/088yyXF6p9vvXtm7OuV27o', 'youtube' => 'https://music.youtube.com/watch?v=QUBgh4C_eaw', 'image' => 'images/sayaw-sa-hangin.jpg', 'video' => 'videos/sayaw-sa-hangin.mp4', 'genres' => ['Alternative', 'Dance']],
         ],
     ],
     [
@@ -92,15 +92,15 @@ $albums = [
         'description'  => 'Holiday vibes and winter feels. A short run of seasonal tracks.',
         'genres'       => ['Pop', 'Holiday', 'R&B', 'Rock'],
         'tracks'       => [
-            ['name' => 'Astig Na Pasko',              'spotify' => 'https://open.spotify.com/track/737xAq49O9XRtwZt5mSKXc', 'youtube' => 'https://music.youtube.com/watch?v=uXzFjjuWido', 'image' => 'images/astig-na-pasko.jpg', 'video' => ''],
-            ['name' => 'Christmas Card',              'spotify' => 'https://open.spotify.com/track/2dO9eLq0FDL2OkbbGBVLKc', 'youtube' => 'https://music.youtube.com/watch?v=1zqHX750XcY', 'image' => 'images/christmas-card.jpg', 'video' => ''],
-            ['name' => 'The Gift I Didn’t Know',      'spotify' => 'https://open.spotify.com/track/1eHfDEKOeGPmFprzyAiayb', 'youtube' => 'https://music.youtube.com/watch?v=A-8ol1xV5ko', 'image' => 'images/the-gift-i-didnt-know.jpg', 'video' => ''],
-            ['name' => 'We Still Believe',            'spotify' => 'https://open.spotify.com/track/3ZquNTYPdpEOBe0lWDNOUq', 'youtube' => 'https://music.youtube.com/watch?v=o_1y6eaqE1s', 'image' => 'images/we-still-believe.jpg', 'video' => ''],
-            ['name' => 'Cookies for Santa',           'spotify' => 'https://open.spotify.com/track/2jc2m1tVoaDNVohM9mmmLP', 'youtube' => 'https://music.youtube.com/watch?v=E2IESf8DXow', 'image' => 'images/cookies-for-santa.jpg', 'video' => 'videos/cookies-for-santa.mp4'],
-            ['name' => 'Overtime (Sa Christmas Eve)', 'spotify' => 'https://open.spotify.com/track/5T9sOigyBO0bfMrnj4fWPJ', 'youtube' => 'https://music.youtube.com/watch?v=TsiRc2LGppI', 'image' => 'images/overtime.jpg', 'video' => 'videos/overtime.mp4'],
-            ['name' => 'Me Mom and Santa',            'spotify' => 'https://open.spotify.com/track/31Sn79QThg0KHrklnJnOZT', 'youtube' => 'https://music.youtube.com/watch?v=x5WmoSWz0XU', 'image' => 'images/me-mom-and-santa.jpg', 'video' => ''],
-            ['name' => 'Come On In',                  'spotify' => 'https://open.spotify.com/track/36beIT2JVVGqN1XJqAra7G', 'youtube' => 'https://music.youtube.com/watch?v=KMynA6QZyiw', 'image' => 'images/come-on-in.jpg', 'video' => ''],
-            ['name' => 'Pasko Ng Rock',               'spotify' => 'https://open.spotify.com/track/3jK1DHExF6dAJYWk8nUQaQ', 'youtube' => 'https://music.youtube.com/watch?v=9HaG0fIHt58', 'image' => 'images/pasko-ng-rock.jpg', 'video' => ''],
+            ['name' => 'Astig Na Pasko',              'spotify' => 'https://open.spotify.com/track/737xAq49O9XRtwZt5mSKXc', 'youtube' => 'https://music.youtube.com/watch?v=uXzFjjuWido', 'image' => 'images/astig-na-pasko.jpg', 'video' => '', 'genres' => ['Pop', 'Holiday']],
+            ['name' => 'Christmas Card',              'spotify' => 'https://open.spotify.com/track/2dO9eLq0FDL2OkbbGBVLKc', 'youtube' => 'https://music.youtube.com/watch?v=1zqHX750XcY', 'image' => 'images/christmas-card.jpg', 'video' => '', 'genres' => ['Pop', 'Rock']],
+            ['name' => 'The Gift I Didn’t Know',      'spotify' => 'https://open.spotify.com/track/1eHfDEKOeGPmFprzyAiayb', 'youtube' => 'https://music.youtube.com/watch?v=A-8ol1xV5ko', 'image' => 'images/the-gift-i-didnt-know.jpg', 'video' => '', 'genres' => ['Pop', 'Holiday']],
+            ['name' => 'We Still Believe',            'spotify' => 'https://open.spotify.com/track/3ZquNTYPdpEOBe0lWDNOUq', 'youtube' => 'https://music.youtube.com/watch?v=o_1y6eaqE1s', 'image' => 'images/we-still-believe.jpg', 'video' => '', 'genres' => ['Pop', 'Inspirational']],
+            ['name' => 'Cookies for Santa',           'spotify' => 'https://open.spotify.com/track/2jc2m1tVoaDNVohM9mmmLP', 'youtube' => 'https://music.youtube.com/watch?v=E2IESf8DXow', 'image' => 'images/cookies-for-santa.jpg', 'video' => 'videos/cookies-for-santa.mp4', 'genres' => ['Pop', 'Holiday']],
+            ['name' => 'Overtime (Sa Christmas Eve)', 'spotify' => 'https://open.spotify.com/track/5T9sOigyBO0bfMrnj4fWPJ', 'youtube' => 'https://music.youtube.com/watch?v=TsiRc2LGppI', 'image' => 'images/overtime.jpg', 'video' => 'videos/overtime.mp4', 'genres' => ['Pop', 'Ballad']],
+            ['name' => 'Me Mom and Santa',            'spotify' => 'https://open.spotify.com/track/31Sn79QThg0KHrklnJnOZT', 'youtube' => 'https://music.youtube.com/watch?v=x5WmoSWz0XU', 'image' => 'images/me-mom-and-santa.jpg', 'video' => '', 'genres' => ['Pop', 'Holiday']],
+            ['name' => 'Come On In',                  'spotify' => 'https://open.spotify.com/track/36beIT2JVVGqN1XJqAra7G', 'youtube' => 'https://music.youtube.com/watch?v=KMynA6QZyiw', 'image' => 'images/come-on-in.jpg', 'video' => '', 'genres' => ['Pop', 'R&B']],
+            ['name' => 'Pasko Ng Rock',               'spotify' => 'https://open.spotify.com/track/3jK1DHExF6dAJYWk8nUQaQ', 'youtube' => 'https://music.youtube.com/watch?v=9HaG0fIHt58', 'image' => 'images/pasko-ng-rock.jpg', 'video' => '', 'genres' => ['Pop', 'Rock']],
         ],
     ],
 ];
@@ -112,15 +112,19 @@ $singles = [
         'year' => '2026',
         'youtube' => 'https://music.youtube.com/watch?v=DHY8a3oPZL4', 
         'spotify' => 'https://open.spotify.com/track/5Du3PEAGB9kE5AphQU5RWp', 
+        'apple' => 'https://music.apple.com/us/song/imove-dance-version/1876373430',
+        'amazon' => 'https://music.amazon.com/albums/B0GMXZNQ38',
         'genres' => ['Pop', 'Dance'],
     ],
     [
         'name'    => 'Roll The Dice',
         'image'   => 'images/roll-the-dice.jpg',
-        'video'   => 'videos/roll-the-dice.mp4',
+        'video'   => '',
         'year'    => '2025',
         'youtube' => 'https://music.youtube.com/watch?v=kEAqwZ43f5o',
         'spotify' => 'https://open.spotify.com/track/6cbw9UAIoveSQr9dwTZLY7',
+        'apple' => 'https://music.apple.com/us/song/roll-the-dice/1850350004',
+        'amazon' => 'https://music.amazon.com/albums/B0FYGZWTDW',
         'genres'  => ['Pop', 'Alternative'],
     ],
 ];
@@ -174,6 +178,7 @@ foreach ($albums as $a) {
         ];
         $trackImage = '';
         $trackVideo = '';
+        $trackGenres = $a['genres'];
         if (is_array($track)) {
             $trackName = isset($track['name']) && $track['name'] !== '' ? $track['name'] : $trackName;
             if (isset($track['spotify']) && $track['spotify'] !== '') {
@@ -184,6 +189,9 @@ foreach ($albums as $a) {
             }
             $trackImage = isset($track['image']) && $track['image'] !== '' ? $track['image'] : '';
             $trackVideo = isset($track['video']) && $track['video'] !== '' ? $track['video'] : '';
+            if (!empty($track['genres']) && is_array($track['genres'])) {
+                $trackGenres = $track['genres'];
+            }
         } elseif (is_string($track) && $track !== '') {
             $trackName = $track;
         }
@@ -195,7 +203,7 @@ foreach ($albums as $a) {
             'title'  => $trackName,
             'album'  => $a['title'],
             'year'   => $year,
-            'genres' => $a['genres'],
+            'genres' => $trackGenres,
         ];
     }
 }
