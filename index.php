@@ -359,7 +359,7 @@ function release_embed_urls(array $links) {
                                  data-external-link="<?php echo htmlspecialchars($externalLink); ?>">
                                 <div class="w-full overflow-hidden rounded-t-xl relative" style="aspect-ratio: 1/1.1; padding: 5% 0;">
                                     <div class="aspect-square relative w-full h-full">
-                                        <img src="<?php echo htmlspecialchars($trackImage); ?>" alt="<?php echo htmlspecialchars($r['title']); ?> - Cover" class="track-card-poster w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                        <img src="<?php echo htmlspecialchars($trackImage); ?>" alt="<?php echo htmlspecialchars(strip_tags($r['title'])); ?> - Cover" class="track-card-poster w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                                     <?php if ($trackVideo !== ''): ?>
                                     <video class="track-card-video absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 group-hover:scale-110 transition-transform duration-500" muted loop playsinline autoplay preload="metadata" aria-hidden="true">
                                         <source src="<?php echo htmlspecialchars($trackVideo); ?>" type="video/mp4">
@@ -373,7 +373,7 @@ function release_embed_urls(array $links) {
                                     </div>
                                 </div>
                                 <div class="p-4">
-                                    <h3 class="text-base font-bold text-white mb-1"><?php echo htmlspecialchars($r['title']); ?></h3>
+                                    <h3 class="text-base font-bold text-white mb-1"><?php echo $r['title']; ?></h3>
                                     <p class="text-gray-400 text-xs mb-2"><?php echo htmlspecialchars($r['album']); ?> • <?php echo htmlspecialchars($r['year']); ?></p>
                                     <div class="flex gap-1 flex-wrap">
                                         <?php foreach ($r['genres'] as $i => $genre): ?>
@@ -692,7 +692,7 @@ function release_embed_urls(array $links) {
                 if (ext) window.open(ext, '_blank');
                 return;
             }
-            titleEl.textContent = card.getAttribute('data-title') || '';
+            titleEl.innerHTML = card.getAttribute('data-title') || '';
             albumEl.textContent = card.getAttribute('data-album') || '';
             var hasYtLink = !!card.getAttribute('data-youtube-link');
             var hasSpLink = !!card.getAttribute('data-spotify-link');
@@ -839,7 +839,7 @@ function release_embed_urls(array $links) {
                 num.textContent = (i + 1) + '.';
                 var title = document.createElement('span');
                 title.className = 'truncate';
-                title.textContent = name;
+                title.innerHTML = name;
                 li.appendChild(num);
                 li.appendChild(title);
                 albumTracksList.appendChild(li);
