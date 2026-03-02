@@ -22,6 +22,24 @@ if (is_file($root . '/.env')) {
 $data = require __DIR__ . '/data.php';
 $releases = $data['releases'];
 $albums = $data['albums'];
+$singles = $data['singles'] ?? [];
+// Convert singles to release-like entries for Featured Tracks pool (same shape as $releases)
+$singlesAsReleases = array_map(function ($s) {
+    return [
+        'image'  => $s['image'] ?? '',
+        'video'  => $s['video'] ?? '',
+        'links'  => [
+            'amazon'  => '',
+            'youtube' => $s['youtube'] ?? '',
+            'apple'   => '',
+            'spotify' => $s['spotify'] ?? '',
+        ],
+        'title'  => $s['name'] ?? '',
+        'album'  => 'Single',
+        'year'   => $s['year'] ?? '',
+        'genres' => $s['genres'] ?? [],
+    ];
+}, $singles);
 $platformHover = $data['platformHover'];
 
 // Platforms: show 8 total — always Spotify, Amazon, YouTube Music, Apple Music; then 4 random from the rest
@@ -323,6 +341,8 @@ function release_embed_urls(array $links) {
                     }));
                 }
             }
+            // Include singles in the pool for Featured Tracks
+            $releasesShown = array_merge($releasesShown, $singlesAsReleases);
             shuffle($releasesShown);
             $releasesShown = array_slice($releasesShown, 0, 12);
             $featuredSlides = array_chunk($releasesShown, 4);

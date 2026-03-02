@@ -69,11 +69,10 @@ $albums = [
             ['name' => 'Silver',         'spotify' => 'https://open.spotify.com/track/7LiuG0R4tlPDMPrhlJ1Aak', 'youtube' => 'https://music.youtube.com/watch?v=Zm_IJywctMc', 'image' => 'images/silver.jpg','video'=>'videos/silver.mp4'],
             ['name' => "You Don't Know", 'spotify' => 'https://open.spotify.com/track/0nC2CYz29QcF9htK0Rqnmz', 'youtube' => 'https://music.youtube.com/watch?v=mgjnPWl_fTE', 'image' => 'images/you-dont-know.jpg', 'video' => 'videos/you-dont-know.mp4'],
             ['name' => 'iMove',          'spotify' => 'https://open.spotify.com/track/4ssMzGURBr7JcVEsFrkHj8', 'youtube' => 'https://music.youtube.com/watch?v=7uIyTu4VF2I', 'image' => 'images/imove.jpg', 'video' => 'videos/imove.mp4'],
-            ['name' => 'Golden Fire',    'spotify' => 'https://open.spotify.com/track/10vNExVk9JmCDJrIqYWJiR', 'youtube' => 'https://music.youtube.com/watch?v=C2wk9TOhjU4', 'image' => '', 'video' => ''],
+            ['name' => 'Golden Fire',    'spotify' => 'https://open.spotify.com/track/10vNExVk9JmCDJrIqYWJiR', 'youtube' => 'https://music.youtube.com/watch?v=C2wk9TOhjU4', 'image' => 'images/golden-fire.jpg', 'video' => 'videos/golden-fire.mp4'],
             ['name' => 'Shadow Play',    'spotify' => 'https://open.spotify.com/track/3rYRGt5yPodYD5fUj3Dcan', 'youtube' => 'https://music.youtube.com/watch?v=L2_KvidCXsc', 'image' => 'images/shadow-play.jpg', 'video' => 'videos/shadow-play.mp4'],
             ['name' => 'Sinta',          'spotify' => 'https://open.spotify.com/track/7pHcQDiZuBur66S41e2cq2', 'youtube' => 'https://music.youtube.com/watch?v=JL19hpZ400E', 'image' => 'images/sinta.jpg', 'video' => 'videos/sinta.mp4'],
             ['name' => 'Sayaw Sa Hangin','spotify' => 'https://open.spotify.com/track/088yyXF6p9vvXtm7OuV27o', 'youtube' => 'https://music.youtube.com/watch?v=QUBgh4C_eaw', 'image' => 'images/sayaw-sa-hangin.jpg', 'video' => 'videos/sayaw-sa-hangin.mp4'],
-            ['name' => 'iMove (Dance Version)', 'spotify' => 'https://open.spotify.com/track/5Du3PEAGB9kE5AphQU5RWp', 'youtube' => 'https://music.youtube.com/watch?v=DHY8a3oPZL4', 'image' => 'images/imove-dance.jpg', 'video' => 'videos/imove-dance.mp4'],
         ],
     ],
     [
@@ -103,6 +102,26 @@ $albums = [
             ['name' => 'Come On In',                  'spotify' => 'https://open.spotify.com/track/36beIT2JVVGqN1XJqAra7G', 'youtube' => 'https://music.youtube.com/watch?v=KMynA6QZyiw', 'image' => 'images/come-on-in.jpg', 'video' => ''],
             ['name' => 'Pasko Ng Rock',               'spotify' => 'https://open.spotify.com/track/3jK1DHExF6dAJYWk8nUQaQ', 'youtube' => 'https://music.youtube.com/watch?v=9HaG0fIHt58', 'image' => 'images/pasko-ng-rock.jpg', 'video' => ''],
         ],
+    ],
+];
+$singles = [
+    [
+        'name' => 'iMove (Dance Version)', 
+        'image' => 'images/imove-dance.jpg', 
+        'video' => 'videos/imove-dance.mp4',
+        'year' => '2026',
+        'youtube' => 'https://music.youtube.com/watch?v=DHY8a3oPZL4', 
+        'spotify' => 'https://open.spotify.com/track/5Du3PEAGB9kE5AphQU5RWp', 
+        'genres' => ['Pop', 'Dance'],
+    ],
+    [
+        'name'    => 'Roll The Dice',
+        'image'   => 'images/roll-the-dice.jpg',
+        'video'   => 'videos/roll-the-dice.mp4',
+        'year'    => '2025',
+        'youtube' => 'https://music.youtube.com/watch?v=kEAqwZ43f5o',
+        'spotify' => 'https://open.spotify.com/track/6cbw9UAIoveSQr9dwTZLY7',
+        'genres'  => ['Pop', 'Alternative'],
     ],
 ];
 
@@ -184,6 +203,7 @@ foreach ($albums as $a) {
 return [
     'releases' => $releases,
     'albums'   => $albums,
+    'singles'  => $singles,
 
     // Platforms data: name, url, icon (lucide fallback), icon_slug (Simple Icons SVG in icons/), gradient, hover
     'platforms' => [
